@@ -122,15 +122,22 @@ nav .menu span {
   nav .menu {
     display: flex;
   }
-
+  
   .login-btn, .logout-btn {
     margin: 0;
+    margin-top: 10px;
   }
   nav {
     flex-direction: column;
     align-items: start;
+    border-radius: 10px;
   }
 
+  nav.scrolled {
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+  }
+  
   nav ul {
     display: none;
     flex-direction: column;
@@ -138,9 +145,10 @@ nav .menu span {
     margin-bottom: 0.25rem;
     align-items: center;
   }
-
+  
   nav ul.open {
     display: flex;
+    margin-bottom: 30px;
   }
 
   nav ul li {
