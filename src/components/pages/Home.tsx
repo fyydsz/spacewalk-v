@@ -75,7 +75,7 @@ const Home: React.FC = () => {
           ></span>
         </h1>
         <p className="text-[1.2rem]! mb-4">Explore the cosmos.</p>
-        <ButtonGlass onClick={() => scrollToSection("about")}>
+        <ButtonGlass className="button-glass" onClick={() => scrollToSection("about")}>
           Learn More
         </ButtonGlass>
       </div>
