@@ -1,0 +1,3 @@
+[submodule "spacewalk-api"]
+	path = spacewalk-api
+	url = https://github.com/fyydsz/spacewalk-api.git
