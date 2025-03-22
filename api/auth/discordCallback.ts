@@ -3,7 +3,6 @@ import { configDotenv } from "dotenv";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import { URLSearchParams } from "node:url";
-import cookieParser from "cookie-parser";
 
 configDotenv();
 
