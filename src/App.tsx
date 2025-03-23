@@ -2,15 +2,14 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import './App.css'
-import Home from './components/pages/main/Home'
+import Home from './components/pages/main/Home';
 
-import NotFound from './components/pages/main/NotFound404'
-import About from './components/pages/main/About'
-import Support from './components/pages/main/Support'
-import MainHome from './components/layout/home/main-home'
-import MainDashboard from './components/layout/dashboard/main-dashboard'
-import DashboardHome from './components/pages/dashboard/DashboardHome'
-import MainNotFound from './components/layout/home/notfound'
+import NotFound from './components/pages/main/NotFound404';
+import About from './components/pages/main/About';
+import Support from './components/pages/main/Support';
+import MainHome from './components/layout/home/main-home';
+import MainDashboard from './components/layout/dashboard/main-dashboard';
+import DashboardHome from './components/pages/dashboard/DashboardHome';
 
 function App() {
   const location = useLocation();
@@ -37,9 +36,7 @@ function App() {
         <Route element={<MainDashboard />}>
           <Route path='/dashboard' element={<DashboardHome />} />
         </Route>
-        <Route element={<MainNotFound />}>
-          <Route path='*' element={<NotFound />} />
-        </Route>
+        <Route path='*' element={<NotFound />} />
       </Routes>
       {!isNotFound && <About />}
     </div>
