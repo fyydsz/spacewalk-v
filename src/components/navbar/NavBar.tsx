@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 const NavBar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [user, setUser] = useState<{ username: string; avatar: string } | null>(null);
+
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -36,39 +36,6 @@ const NavBar: React.FC = () => {
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   }, [menuOpen]);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch("https://api.spacewalk.my.id/auth/me", {
-          credentials: "include", // Kirim cookie dengan request
-        });
-
-        if (res.status === 401) {
-          console.warn("User not authenticated, skipping user setup.");
-          return;
-        }
-
-        if (!res.ok) {
-          console.error(`Failed to fetch user: ${res.status} ${res.statusText}`);
-          return;
-        }
-
-        const data = await res.json();
-
-        if (data.success) {
-          setUser({
-            username: data.user.username,
-            avatar: `https://cdn.discordapp.com/avatars/${data.user.id}/${data.user.avatar}.png`
-          });
-        }
-      } catch (err) {
-        console.error("Network Error:", err);
-      }
-    };
-
-    fetchUser();
-  }, []);
 
   const handleLogin = () => {
     window.location.href = "https://api.spacewalk.my.id/auth/discord";
