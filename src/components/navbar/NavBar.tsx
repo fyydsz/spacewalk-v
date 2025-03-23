@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./navbar.css";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const NavBar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,7 +32,7 @@ const NavBar: React.FC = () => {
         setMenuOpen(false);
       }
     };
-  
+
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   }, [menuOpen]);
@@ -70,14 +72,6 @@ const NavBar: React.FC = () => {
 
   const handleLogin = () => {
     window.location.href = "https://api.spacewalk.my.id/auth/discord";
-  };
-
-  const handleLogout = async () => {
-    await fetch("https://api.spacewalk.my.id/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    });
-    setUser(null);
   };
 
   const scrollToSection = (id: string) => {
@@ -136,18 +130,7 @@ const NavBar: React.FC = () => {
         </li>
 
         <li>
-          {user ? (
-            <div className="user-info">
-              <img src={user.avatar} alt="User Avatar" className="avatar" />
-              <span className="user">{user.username}</span>
-              <button className="logout-btn" onClick={handleLogout}>Logout</button>
-            </div>
-          ) : (
-            <button className="login-btn" onClick={handleLogin}>
-
-              Login with Discord
-            </button>
-          )}
+          <Button variant="glass" onClick={handleLogin} className={cn("ml-3")}>Dashboard</Button>
         </li>
       </ul>
     </nav>

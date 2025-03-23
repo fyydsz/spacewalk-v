@@ -1,6 +1,6 @@
-import { cn } from "../../functions/twclsx";
+import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
-import SocialMediaButtons from "../ui/SocialMediaButtons";
+import { SocialMediaButtons } from "@/components/ui/custom-socialmedia-buttons";
 const Support: React.FC = () => {
   return (
     <section

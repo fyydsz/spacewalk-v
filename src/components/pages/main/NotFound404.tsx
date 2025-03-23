@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { cn } from "../../functions/twclsx";
-import ButtonGlass from "../ui/ButtonGlass";
+import { cn } from "@/lib/utils";
+import { ButtonGlass } from "@/components/ui/custom-button-glass";
 
 const NotFound: React.FC = () => {
   const fullText = "404 - Not Found";

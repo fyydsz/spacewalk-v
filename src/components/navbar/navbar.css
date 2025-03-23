@@ -23,6 +23,7 @@ nav.scrolled {
 
 nav a,
 nav .title {
+  font-family: Arial, Helvetica, sans-serif !important;
   color: white;
   text-decoration: none;
   font-weight: 600;
@@ -32,7 +33,6 @@ nav .title {
 nav .title {
   font-size: 1.5rem;
   margin: 1rem;
-  font-weight: bold;
   text-decoration: none;
   color: white;
 }
@@ -84,30 +84,6 @@ nav .menu span {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-}
-
-.login-btn, .logout-btn {
-  background-color: #5865F2;
-  margin-left: 1rem;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 7px;
-  cursor: pointer;
-  align-items: center;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.logout-btn {
-  background-color: #ff5050;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  justify-content: center;
 }
 
 .user {

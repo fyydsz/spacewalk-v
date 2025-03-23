@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import ButtonGlass from "../ui/ButtonGlass";
-import { cn } from "../../functions/twclsx";
+import { ButtonGlass } from "@/components/ui/custom-button-glass";
+import { cn } from "@/lib/utils";
 
 const Home: React.FC = () => {
   const fullText = "Space Walk";
