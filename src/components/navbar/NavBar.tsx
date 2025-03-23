@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./navbar.css";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -7,7 +8,6 @@ import { cn } from "@/lib/utils";
 const NavBar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -37,8 +37,24 @@ const NavBar: React.FC = () => {
     return () => document.removeEventListener("click", handleClickOutside);
   }, [menuOpen]);
 
-  const handleLogin = () => {
-    window.location.href = "https://api.spacewalk.my.id/auth/discord";
+  const handleLogin = async () => {
+    try {
+      // Your async code here, e.g., fetching data
+      const res = await axios.get('https://api.spacewalk.my.id/auth/me', { withCredentials: true });
+      if (res.status === 401) {
+        console.warn("User not authenticated, skipping user setup.");
+        return;
+      }
+
+      if (res.data.success) {
+        navigate("/dashboard");
+      } else {
+        window.location.href = "https://api.spacewalk.my.id/auth/discord";
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      window.location.href = "https://api.spacewalk.my.id/auth/discord";
+    }
   };
 
   const scrollToSection = (id: string) => {
@@ -57,14 +73,13 @@ const NavBar: React.FC = () => {
         onClick={(e) => {
           if (location.pathname === "/") {
             e.preventDefault(); // Hindari reload yang tidak perlu
-            navigate("/")
+            navigate("/");
             window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll ke atas
           }
         }}
       >
         Home
       </Link>
-
 
       <div className="menu" onClick={() => setMenuOpen(!menuOpen)}>
         <span></span>
@@ -73,18 +88,20 @@ const NavBar: React.FC = () => {
       </div>
 
       <ul className={menuOpen ? "open" : ""}>
-        {/* Jika di halaman Home, pakai scroll. Jika di halaman lain, navigasi ke Home dulu */}
         <li>
           {location.pathname === "/" ? (
-            <a href="#about" onClick={(e) => {
-              e.preventDefault();
-              scrollToSection("about");
-              navigate("#about")
-            }}>
+            <a
+              href="#about"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("about");
+                navigate("#about");
+              }}
+            >
               About
             </a>
           ) : (
-            <Link to="/#about" >About</Link>
+            <Link to="/#about">About</Link>
           )}
         </li>
 
@@ -97,7 +114,9 @@ const NavBar: React.FC = () => {
         </li>
 
         <li>
-          <Button variant="glass" onClick={handleLogin} className={cn("ml-3")}>Dashboard</Button>
+          <Button variant="glass" onClick={handleLogin} className={cn("ml-3")}>
+            Dashboard
+          </Button>
         </li>
       </ul>
     </nav>
