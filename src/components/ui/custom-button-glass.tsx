@@ -1,4 +1,4 @@
-import { cn } from "../../functions/twclsx";
+import { cn } from "@/lib/utils";
 import { Link, LinkProps } from "react-router-dom";
 import { ButtonHTMLAttributes } from "react";
 
@@ -42,4 +42,4 @@ const ButtonGlass: React.FC<ButtonProps | LinkButtonProps> = ({ as = "button", c
   );
 };
 
-export default ButtonGlass;
+export { ButtonGlass };

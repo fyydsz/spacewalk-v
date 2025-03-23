@@ -1,5 +1,5 @@
 import { FaInstagram, FaGithub, FaDiscord } from "react-icons/fa";
-import { cn } from "../../functions/twclsx";
+import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import takoIcon from "../../assets/icons/tako.png";
 
@@ -40,4 +40,4 @@ const SocialMediaButtons = () => {
   );
 };
 
-export default SocialMediaButtons;
+export { SocialMediaButtons };
