@@ -29,7 +29,7 @@ const Sidebar: React.FC = () => {
       })
       .catch((error) => {
         console.error("Failed to fetch user data:", error.response?.data || error.message);
-
+        window.location.href = "https://api.spacewalk.my.id/auth/discord";
       });
   }, []);
 
