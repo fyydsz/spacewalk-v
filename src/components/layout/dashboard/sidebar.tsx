@@ -97,7 +97,7 @@ const Sidebar: React.FC = () => {
           icon={<LogOut size={24} />}
           text="Logout"
           onClick={async () => {
-            await axios.get("https://api.spacewalk.my.id/auth/logout", { withCredentials: true });
+            await axios.post("https://api.spacewalk.my.id/auth/logout", { withCredentials: true });
             window.location.href = "https://www.spacewalk.my.id";
           }}
           isCollapsed={!isSidebarOpen}
