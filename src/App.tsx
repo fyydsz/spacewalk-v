@@ -1,12 +1,13 @@
 
 import { Route, Routes, useLocation } from 'react-router-dom'
-import './App.css'
-import Home from './components/pages/Home'
-import NavBar from './components/navbar/NavBar'
-import NotFound from './components/pages/NotFound404'
 import { useEffect } from 'react'
-import About from './components/pages/About'
-import Support from './components/pages/Support'
+import './App.css'
+import Home from './components/pages/main/Home'
+import NavBar from './components/navbar/NavBar'
+import NotFound from './components/pages/main/NotFound404'
+import About from './components/pages/main/About'
+import Support from './components/pages/main/Support'
+import MainHome from './components/layout/main-home'
 
 function App() {
   const location = useLocation();
@@ -27,9 +28,11 @@ function App() {
     <div className="App">
       <NavBar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/support" element={<Support />}/>
+        <Route element={<MainHome />}>
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/support" element={<Support />} />
+        </Route>
       </Routes>
       {!isNotFound && <About />}
     </div>
