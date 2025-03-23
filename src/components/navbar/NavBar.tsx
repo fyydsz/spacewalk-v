@@ -49,11 +49,11 @@ const NavBar: React.FC = () => {
       if (res.data.success) {
         navigate("/dashboard");
       } else {
-        window.location.href = "https://api.spacewalk.my.id/auth/discord";
+        window.location.href = "https://api.spacewalk.my.id/auth/me";
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      window.location.href = "https://api.spacewalk.my.id/auth/discord";
+      window.location.href = "https://api.spacewalk.my.id/auth/me";
     }
   };
 
