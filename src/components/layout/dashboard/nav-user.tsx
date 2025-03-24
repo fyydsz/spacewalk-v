@@ -32,18 +32,9 @@ import {
 import axios from "axios"
 import { useState, useEffect } from "react"
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string
-  }
-}) {
+export function NavUser() {
   const { isMobile } = useSidebar()
-  const [user_dc, setUser] = useState<{ username: string; avatar: string } | null>(null);
-
+  const [user_dc, setUser] = useState<{ username: string; avatar: string; email: string } | null>(null);
 
   useEffect(() => {
     axios
@@ -53,6 +44,7 @@ export function NavUser({
           setUser({
             username: response.data.user.username,
             avatar: `https://cdn.discordapp.com/avatars/${response.data.user.id}/${response.data.user.avatar}.png`,
+            email: response.data.user.email
           });
         }
       })
@@ -62,6 +54,14 @@ export function NavUser({
       });
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await axios.post("https://api.spacewalk.my.id/auth/logout", {}, { withCredentials: true });
+      window.location.href = "https://www.spacewalk.my.id"; // Redirect ke halaman login
+    } catch (error: any) {
+      console.error("Logout failed:", error.response?.data || error.message);
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -77,8 +77,8 @@ export function NavUser({
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-semibold">{user_dc?.username}</span>
+                <span className="truncate text-xs">Discord Member</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -92,12 +92,12 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarImage src={user_dc?.avatar} alt={user_dc?.username} />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-semibold">{user_dc?.username}</span>
+                  <span className="truncate text-xs">{user_dc?.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
@@ -124,7 +124,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut />
               Log out
             </DropdownMenuItem>
