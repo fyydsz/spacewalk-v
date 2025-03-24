@@ -1,20 +1,48 @@
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
+import {
+  SidebarInset,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
+import RecentActivity from "./components/activity"
+import ProjectProgress from "./components/progress"
+import DashboardSummary from "./components/summary"
 
-const DashboardHome: React.FC = () => {
+export default function DashboardHome() {
   return (
-    <div
-      id="home"
-      className="relative w-full h-screen flex items-center justify-center 
-      bg-[url('/src/assets/img/bg.webp')] bg-cover bg-[position:center_bottom] bg-no-repeat bg-fixed"
-    >
-      {/* Overlay untuk membuat background lebih gelap */}
-      <div className="absolute inset-0 bg-black/35"></div>
 
-      {/* Konten yang ada di atas overlay */}
-      <div className="relative z-10 text-white text-2xl font-bold">
-       
+    <SidebarInset>
+      <header className="flex h-16 shrink-0 items-center gap-2">
+        <div className="flex items-center gap-2 px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="#">
+                  Building Your Application
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      </header>
+      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <RecentActivity />
+        <DashboardSummary />
+        <ProjectProgress />
       </div>
-    </div>
-  );
-};
-
-export default DashboardHome;
+    </SidebarInset>
+  )
+}
