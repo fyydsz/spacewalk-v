@@ -2,7 +2,7 @@
   background-color: #1d4ed8;
 }
 
-nav {
+.navbar-home {
   position: fixed;
   top: 0;
   left: 0;
@@ -16,13 +16,13 @@ nav {
   z-index: 1000;
 }
 
-nav.scrolled {
+.navbar-home.scrolled {
   background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
 }
 
-nav a,
-nav .title {
+.navbar-home a,
+.navbar-home .title {
   font-family: Arial, Helvetica, sans-serif !important;
   color: white;
   text-decoration: none;
@@ -30,23 +30,23 @@ nav .title {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-nav .title {
+.navbar-home .title {
   font-size: 1.5rem;
   margin: 1rem;
   text-decoration: none;
   color: white;
 }
 
-nav ul {
+.navbar-home ul {
   display: flex;
 }
 
-nav ul li {
+.navbar-home ul li {
   list-style: none;
 
 }
 
-nav ul li a {
+.navbar-home ul li a {
   display: block;
   text-decoration: none;
   color: white;
@@ -56,11 +56,11 @@ nav ul li a {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-nav ul li a:not(.active):hover {
+.navbar-home ul li a:not(.active):hover {
   background-color: #6495ff60;
 }
 
-nav .menu {
+.navbar-home .menu {
   display: none;
   position: absolute;
   top: 1.75rem;
@@ -71,7 +71,7 @@ nav .menu {
   height: 2rem;
 }
 
-nav .menu span {
+.navbar-home .menu span {
   height: 0.4rem;
   width: 100%;
   background-color: white;
@@ -95,26 +95,25 @@ nav .menu span {
 }
 
 @media (max-width: 620px) {
-  nav .menu {
+  .navbar-home .menu {
     display: flex;
   }
   
-  .login-btn, .logout-btn {
-    margin: 0;
-    margin-top: 10px;
+  .buttonglass {
+    margin: 0.5rem;
   }
-  nav {
+  .navbar-home {
     flex-direction: column;
     align-items: start;
     border-radius: 10px;
   }
 
-  nav.scrolled {
+  .navbar-home.scrolled {
     background-color: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(8px);
   }
   
-  nav ul {
+  .navbar-home ul {
     display: none;
     flex-direction: column;
     width: 100%;
@@ -122,21 +121,21 @@ nav .menu span {
     align-items: center;
   }
   
-  nav ul.open {
+  .navbar-home ul.open {
     display: flex;
     margin-bottom: 30px;
   }
 
-  nav ul li {
+  .navbar-home ul li {
     width: auto;
     text-align: center;
   }
 
-  nav ul li button {
+  .navbar-home ul li button {
     text-align: center;
   }
 
-  nav ul li a {
+  .navbar-home ul li a {
     margin: 0.2rem 0.5rem;
   }
 }

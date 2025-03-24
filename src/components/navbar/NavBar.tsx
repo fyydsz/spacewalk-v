@@ -66,7 +66,7 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <nav className={scrolled || menuOpen ? "scrolled" : ""}>
+    <nav className={`navbar-home ${scrolled || menuOpen ? "scrolled" : ""}`}>
       <Link
         to="/"
         className="title"
@@ -114,7 +114,7 @@ const NavBar: React.FC = () => {
         </li>
 
         <li>
-          <Button variant="glass" onClick={handleLogin} className={cn("ml-3")}>
+          <Button variant="glass" onClick={handleLogin} className={cn("buttonglass ml-3")}>
             Dashboard
           </Button>
         </li>
