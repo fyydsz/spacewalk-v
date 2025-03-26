@@ -2,12 +2,12 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbS
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@radix-ui/react-separator";
 
-const profile = {
-  id: "12345678910111213",
-  username: "fyy_",
-  email: "raffypradest@gmail.com",
-  joined_since: "12 days"
-}
+// const profile = {
+//   id: "12345678910111213",
+//   username: "fyy_",
+//   email: "raffypradest@gmail.com",
+//   joined_since: "12 days"
+// }
 
 const DashboardAccount: React.FC = () => {
   return(
