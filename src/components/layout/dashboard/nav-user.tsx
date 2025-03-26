@@ -52,7 +52,7 @@ export function NavUser() {
       })
       .catch((error) => {
         console.error("Failed to fetch user data:", error.response?.data || error.message);
-        // window.location.href = "https://api.spacewalk.my.id/auth/discord";
+        window.location.href = "https://api.spacewalk.my.id/auth/discord";
       });
   }, []);
 
