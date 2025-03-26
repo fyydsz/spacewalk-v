@@ -10,6 +10,7 @@ import Support from './components/pages/main/Support';
 import MainHome from './components/layout/home/main-home';
 import MainDashboard from './components/layout/dashboard/main-dashboard';
 import DashboardHome from './components/pages/dashboard/DashboardHome';
+import DashboardAccount from './components/pages/dashboard/DashboardAccount';
 
 function App() {
   const location = useLocation();
@@ -35,6 +36,7 @@ function App() {
         </Route>
         <Route element={<MainDashboard />}>
           <Route path='/dashboard' element={<DashboardHome />} />
+          <Route path='/dashboard/account' element={<DashboardAccount />} />
         </Route>
         <Route path='*' element={<NotFound />} />
       </Routes>

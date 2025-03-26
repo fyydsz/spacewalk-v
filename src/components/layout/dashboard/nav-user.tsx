@@ -31,9 +31,11 @@ import {
 } from "@/components/ui/sidebar"
 import axios from "axios"
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 export function NavUser() {
-  const { isMobile } = useSidebar()
+  const navigate = useNavigate();
+  const { isMobile } = useSidebar();
   const [user_dc, setUser] = useState<{ username: string; avatar: string; email: string } | null>(null);
 
   useEffect(() => {
@@ -50,7 +52,7 @@ export function NavUser() {
       })
       .catch((error) => {
         console.error("Failed to fetch user data:", error.response?.data || error.message);
-        window.location.href = "https://api.spacewalk.my.id/auth/discord";
+        // window.location.href = "https://api.spacewalk.my.id/auth/discord";
       });
   }, []);
 
@@ -62,6 +64,14 @@ export function NavUser() {
       console.error("Logout failed:", error.response?.data || error.message);
     }
   };
+
+  const handleGoToAccount = async () => {
+    try {
+      navigate("/dashboard/account")
+    } catch (err: any) {
+      console.error(err)
+    }
+  }
 
   return (
     <SidebarMenu>
@@ -92,35 +102,20 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user_dc?.avatar} alt={user_dc?.username} />
+                  <AvatarImage src={user_dc?.avatar} alt={user_dc?.username || "Test"} />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user_dc?.username}</span>
-                  <span className="truncate text-xs">{user_dc?.email}</span>
+                  <span className="truncate font-semibold">{user_dc?.username || "Test"}</span>
+                  <span className="truncate text-xs">{user_dc?.email || "test@example.com"}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={handleGoToAccount}>
                 <BadgeCheck />
                 Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
