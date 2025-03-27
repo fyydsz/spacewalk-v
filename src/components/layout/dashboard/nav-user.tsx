@@ -32,7 +32,7 @@ import { useNavigate } from "react-router-dom"
 
 export function NavUser() {
   const navigate = useNavigate();
-  const { isMobile } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar();
   const [user_dc, setUser] = useState<{ username: string; avatar: string; email: string } | null>(null);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export function NavUser() {
       })
       .catch((error) => {
         console.error("Failed to fetch user data:", error.response?.data || error.message);
-        window.location.href = "https://api.spacewalk.my.id/auth/discord";
+        // window.location.href = "https://api.spacewalk.my.id/auth/discord";
       });
   }, []);
 
@@ -64,9 +64,10 @@ export function NavUser() {
 
   const handleGoToAccount = async () => {
     try {
-      navigate("/dashboard/account")
+      navigate("/dashboard/account");
+      if (isMobile) setOpenMobile(false); // Tutup sidebar jika di mobile
     } catch (err: any) {
-      console.error(err)
+      console.error(err);
     }
   }
 
