@@ -47,7 +47,7 @@ const NavBar: React.FC = () => {
       }
 
       if (res.data.success) {
-        navigate("/dashboard");
+        window.location.href = "/dashboard"
       } else {
         window.location.href = "https://api.spacewalk.my.id/auth/discord";
       }
