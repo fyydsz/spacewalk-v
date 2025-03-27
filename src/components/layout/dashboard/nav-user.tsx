@@ -34,6 +34,7 @@ export function NavUser() {
   const navigate = useNavigate();
   const { isMobile, setOpenMobile } = useSidebar();
   const [user_dc, setUser] = useState<{ username: string; avatar: string; email: string } | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
@@ -43,13 +44,15 @@ export function NavUser() {
           setUser({
             username: response.data.user.username,
             avatar: `https://cdn.discordapp.com/avatars/${response.data.user.id}/${response.data.user.avatar}.png`,
-            email: response.data.user.email
+            email: response.data.user.email,
           });
         }
       })
       .catch((error) => {
         console.error("Failed to fetch user data:", error.response?.data || error.message);
-        window.location.href = "https://api.spacewalk.my.id/auth/discord";
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -69,7 +72,10 @@ export function NavUser() {
     } catch (err: any) {
       console.error(err);
     }
-  }
+  };
+
+  if (loading) return null; // Saat masih loading, jangan tampilkan apa pun
+  if (!user_dc) return null; // Jika tidak ada user yang login, jangan render apa pun
 
   return (
     <SidebarMenu>
@@ -125,5 +131,6 @@ export function NavUser() {
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }
+
