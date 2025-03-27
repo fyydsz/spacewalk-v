@@ -1,6 +1,5 @@
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
-import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
-import { Separator } from "@radix-ui/react-separator";
+import HeaderBreadcrumb from "@/components/layout/dashboard/main-breadcumb";
+import { SidebarInset } from "@/components/ui/sidebar";
 
 // const profile = {
 //   id: "12345678910111213",
@@ -12,27 +11,14 @@ import { Separator } from "@radix-ui/react-separator";
 const DashboardAccount: React.FC = () => {
   return(
     <SidebarInset>
-      <header className="flex h-16 shrink-0 items-center gap-2">
-        <div className="flex items-center gap-2 px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">
-                  Account
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Profile</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-      </header>
+      <HeaderBreadcrumb
+        breadcrumbs={[
+          { label: "Account", href: "#" },
+          { label: "Profile" },
+        ]}
+      />
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        
+        {/* Content */}
       </div>
     </SidebarInset>
   )
