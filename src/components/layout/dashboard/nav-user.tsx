@@ -50,6 +50,7 @@ export function NavUser() {
       })
       .catch((error) => {
         console.error("Failed to fetch user data:", error.response?.data || error.message);
+        window.location.href = "https://api.spacewalk.my.id/auth/discord"; // Redirect ke halaman login
       })
       .finally(() => {
         setLoading(false);
@@ -59,7 +60,7 @@ export function NavUser() {
   const handleLogout = async () => {
     try {
       await axios.post("https://api.spacewalk.my.id/auth/logout", {}, { withCredentials: true });
-      window.location.href = "https://www.spacewalk.my.id"; // Redirect ke halaman login
+      window.location.href = "https://www.spacewalk.my.id"; // Redirect ke halaman utama
     } catch (error: any) {
       console.error("Logout failed:", error.response?.data || error.message);
     }
