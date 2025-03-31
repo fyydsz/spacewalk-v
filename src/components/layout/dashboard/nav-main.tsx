@@ -24,21 +24,23 @@ export function NavMain({
 }: {
   items: {
     title: string;
-    url: string;
+    url?: string;
     icon?: LucideIcon;
+    expanded?: boolean; // Tambahkan properti expanded
     items?: {
       title: string;
       url: string;
     }[];
   }[];
 }) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const location = useLocation();
-  const { isMobile, setOpenMobile } = useSidebar(); // Gunakan setOpenMobile
+  const { isMobile, setOpenMobile } = useSidebar();
 
   const handleClick = (url: string) => {
-    navigate(url);
-    if (isMobile) setOpenMobile(false); // Tutup sidebar jika di mobile
+    // navigate(url);
+    window.location.href = url;
+    if (isMobile) setOpenMobile(false);
   };
 
   return (
@@ -46,12 +48,12 @@ export function NavMain({
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
-          // Cek apakah item ini adalah halaman aktif
           const isPathActive = location.pathname === item.url;
+          const shouldExpand = item.expanded || isPathActive; // Periksa apakah harus diperluas
 
           return item.items && item.items.length > 0 ? (
             <SidebarMenuItem key={item.title}>
-              <Collapsible asChild defaultOpen={isPathActive}>
+              <Collapsible asChild defaultOpen={shouldExpand}>
                 <div>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton className={`group ${isPathActive ? "bg-blue-500! text-white!" : ""}`}>
@@ -66,12 +68,12 @@ export function NavMain({
                         const isSubPathActive = location.pathname === subItem.url;
                         return (
                           <SidebarMenuSubItem key={subItem.title}>
-                            <SidebarMenuSubButton
-                              onClick={() => handleClick(subItem.url)}
-                              className={isSubPathActive ? "bg-blue-500! text-white!" : ""}
-                            >
-                              <span>{subItem.title}</span>
+                            <SidebarMenuSubButton asChild>
+                              <a href={subItem.url} className={isSubPathActive ? "bg-blue-500! text-white!" : ""}>
+                                {subItem.title}
+                              </a>
                             </SidebarMenuSubButton>
+
                           </SidebarMenuSubItem>
                         );
                       })}
@@ -82,13 +84,20 @@ export function NavMain({
             </SidebarMenuItem>
           ) : (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton
-                onClick={() => handleClick(item.url)}
-                className={isPathActive ? "bg-blue-500! text-white!" : ""}
-              >
-                {item.icon && <item.icon />}
-                <span>{item.title}</span>
+              <SidebarMenuButton asChild>
+                <a
+                  href={item.url}
+                  onClick={(e) => {
+                    e.preventDefault(); // Mencegah navigasi default jika pakai react-router
+                    handleClick(item.url!);
+                  }}
+                  className={isPathActive ? "bg-blue-500! text-white!" : ""}
+                >
+                  {item.icon && <item.icon />}
+                  {item.title}
+                </a>
               </SidebarMenuButton>
+
             </SidebarMenuItem>
           );
         })}
