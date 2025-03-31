@@ -3,13 +3,13 @@
 import * as React from "react"
 import {
   BookOpen,
-  Bot,
+  //Bot,
   Frame,
   LifeBuoy,
-  Map,
+  //Map,
   PieChart,
   Send,
-  Settings2,
+  //Settings2,
   SquareTerminal,
 } from "lucide-react"
 
@@ -40,46 +40,9 @@ const data = {
       icon: SquareTerminal,
     },
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
       title: "Documentation",
       url: "#",
+      expanded: true,
       icon: BookOpen,
       items: [
         {
@@ -100,29 +63,29 @@ const data = {
         },
       ],
     },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
+    // {
+    //   title: "Settings",
+    //   url: "#",
+    //   icon: Settings2,
+    //   items: [
+    //     {
+    //       title: "General",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Team",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Billing",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Limits",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
   ],
   navSecondary: [
     {
@@ -138,19 +101,14 @@ const data = {
   ],
   projects: [
     {
-      name: "Design Engineering",
-      url: "#",
+      name: "Discord Server Development",
+      url: "https://rich-quiver-fe1.notion.site/3b367168c4ea479bb2b84f3063e8efd7?v=a9924337be4b486bb7859ce983dd19ca",
       icon: Frame,
     },
     {
-      name: "Sales & Marketing",
-      url: "#",
+      name: "Story Development",
+      url: "/dashboard/story",
       icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
     },
   ],
 }
