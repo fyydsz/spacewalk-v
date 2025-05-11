@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronRight, type LucideIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   Collapsible,
@@ -49,11 +50,23 @@ export function NavMain({
       <SidebarMenu>
         {items.map((item) => {
           const isPathActive = location.pathname === item.url;
-          const shouldExpand = item.expanded || isPathActive; // Periksa apakah harus diperluas
+          const key = `collapse-${item.title}`;
+
+          const [isOpen, setIsOpen] = useState(() => {
+            if (typeof window !== "undefined") {
+              const stored = localStorage.getItem(key);
+              return stored === "true" || item.expanded || isPathActive;
+            }
+            return item.expanded || isPathActive;
+          });
+
+          useEffect(() => {
+            localStorage.setItem(key, String(isOpen));
+          }, [isOpen, key]);
 
           return item.items && item.items.length > 0 ? (
             <SidebarMenuItem key={item.title}>
-              <Collapsible asChild defaultOpen={shouldExpand}>
+              <Collapsible asChild open={isOpen} onOpenChange={setIsOpen}>
                 <div>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton className={`group ${isPathActive ? "bg-blue-500! text-white!" : ""}`}>
@@ -73,7 +86,6 @@ export function NavMain({
                                 {subItem.title}
                               </a>
                             </SidebarMenuSubButton>
-
                           </SidebarMenuSubItem>
                         );
                       })}
@@ -88,7 +100,7 @@ export function NavMain({
                 <a
                   href={item.url}
                   onClick={(e) => {
-                    e.preventDefault(); // Mencegah navigasi default jika pakai react-router
+                    e.preventDefault();
                     handleClick(item.url!);
                   }}
                   className={isPathActive ? "bg-blue-500! text-white!" : ""}
@@ -97,7 +109,6 @@ export function NavMain({
                   {item.title}
                 </a>
               </SidebarMenuButton>
-
             </SidebarMenuItem>
           );
         })}
