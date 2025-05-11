@@ -28,11 +28,6 @@ import {
 } from "@/components/ui/sidebar"
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
@@ -90,7 +85,7 @@ const data = {
   navSecondary: [
     {
       title: "Support us!",
-      url: "https://www.tako.id/fyyyy",
+      url: "https://tako.id/fyyyy",
       icon: LifeBuoy,
     },
     {
