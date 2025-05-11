@@ -50,19 +50,18 @@ export function NavMain({
       <SidebarMenu>
         {items.map((item) => {
           const isPathActive = location.pathname === item.url;
-          const key = `collapse-${item.title}`;
 
           const [isOpen, setIsOpen] = useState(() => {
             if (typeof window !== "undefined") {
-              const stored = localStorage.getItem(key);
-              return stored === "true" || item.expanded || isPathActive;
+              const stored = localStorage.getItem(`collapse-${item.title}`);
+              return stored === "true"
             }
-            return item.expanded || isPathActive;
+            return item.expanded ?? false
           });
 
           useEffect(() => {
-            localStorage.setItem(key, String(isOpen));
-          }, [isOpen, key]);
+            localStorage.setItem(`collapse-${item.title}`, String(isOpen));
+          }, [isOpen, item.title]);
 
           return item.items && item.items.length > 0 ? (
             <SidebarMenuItem key={item.title}>
