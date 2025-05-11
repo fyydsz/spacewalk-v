@@ -13,6 +13,7 @@ import DashboardHome from './components/pages/dashboard/DashboardHome';
 import DashboardAccount from './components/pages/dashboard/DashboardAccount';
 import DashboardRegisterRP from './components/pages/dashboard/DashboardRegisterRP';
 import DashboardNotFound from './components/pages/dashboard/DashboardNotFound';
+import MainNotFound from './components/layout/home/notfound';
 
 function App() {
   const location = useLocation();
@@ -47,9 +48,11 @@ function App() {
           <Route path='/dashboard' element={<DashboardHome />} />
           <Route path='/dashboard/register-rp' element={<DashboardRegisterRP />} />
           <Route path='/dashboard/account' element={<DashboardAccount />} />
-          <Route path='/dashboard/*' element={<DashboardNotFound />} /> 
+          <Route path='/dashboard/*' element={<DashboardNotFound />} />
         </Route>
-        <Route path='*' element={<NotFound />} />
+        <Route element={<MainNotFound />}>
+          <Route path='*' element={<NotFound />} />
+        </Route>
       </Routes>
       {!isNotFound && <About />}
     </div>
