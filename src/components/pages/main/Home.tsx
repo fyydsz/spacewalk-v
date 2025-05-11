@@ -42,7 +42,7 @@ const Home: React.FC = () => {
     <section
       id="home"
       className={cn(
-        "relative w-full h-screen flex items-center justify-center",
+        "relative w-full h-dvh flex items-center justify-center",
         "bg-[url('/src/assets/img/bg.webp')] bg-cover bg-[position:center_bottom] bg-no-repeat bg-fixed"
       )}
     >

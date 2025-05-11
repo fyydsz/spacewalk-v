@@ -25,7 +25,7 @@ const NotFound: React.FC = () => {
   return (
     <section className={cn(
       "section-not-found",
-      "relative w-full h-screen flex items-center justify-center",
+      "relative w-full h-dvh flex items-center justify-center",
       "bg-[url('/src/assets/img/bg.webp')] bg-cover bg-[position:center_bottom] bg-no-repeat bg-fixed",
       "before:content-[''] before:absolute before:inset-0 before:bg-black/50 before:z-[1]",
     )}>
