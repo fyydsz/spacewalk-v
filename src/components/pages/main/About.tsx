@@ -27,7 +27,7 @@ const About: React.FC = () => {
         </p>
 
         <ButtonGlass
-          onClick={() => window.location.href = "https://discord.gg/DpNdCKqJtH"}
+          onClick={() => window.location.href = "https://discord.gg/HUPEC4KD2m"}
         >
           Join us
         </ButtonGlass>
