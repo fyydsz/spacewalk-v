@@ -84,7 +84,7 @@ const data = {
   ],
   navSecondary: [
     {
-      title: "Support us!",
+      title: "Support us",
       url: "https://tako.id/fyyyy",
       icon: LifeBuoy,
     },
