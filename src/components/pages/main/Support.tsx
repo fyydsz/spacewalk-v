@@ -7,7 +7,7 @@ const Support: React.FC = () => {
       id="support"
       className={cn(
         "support",
-        "relative h-dvh flex items-center",
+        "relative h-screen flex items-center",
         "bg-[url('/src/assets/img/bg.webp')] bg-cover bg-[position:center_bottom] bg-no-repeat bg-fixed",
         "before:content-[''] before:absolute before:inset-0 before:bg-black/50 before:z-[1]"
       )}

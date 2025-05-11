@@ -5,7 +5,7 @@ const About: React.FC = () => {
   return (
     <section id="about" className={cn(
       'about-sections',
-      'h-dvh flex items-center justify-center text-center',
+      'h-screen flex items-center justify-center text-center',
       'bg-gradient-to-b from-black via-[#0f0f1e] to-[#1a1a2e]',
       'text-white relative overflow-hidden'
     )}>
