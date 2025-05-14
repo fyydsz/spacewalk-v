@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   // DropdownMenuSeparator,
-  DropdownMenuShortcut,
+  // DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -16,7 +16,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 
 export function AppSwitcher({
   app,
@@ -37,12 +37,10 @@ export function AppSwitcher({
     onAppChange?.(activeApp.plan)
   }, [activeApp, onAppChange])
 
-  const navigate = useNavigate()
-
   const handleAppChange = (apps: typeof app[0]) => {
     setActiveApp(apps)
     onAppChange?.(apps.plan)
-    navigate(apps.url)
+    window.location.href = apps.url;
   }
 
   return (
@@ -73,7 +71,7 @@ export function AppSwitcher({
             <DropdownMenuLabel className="text-muted-foreground text-xs">
               Apps
             </DropdownMenuLabel>
-            {app.map((item, index) => (
+            {app.map((item) => (
               <DropdownMenuItem
                 key={item.name}
                 onClick={() => handleAppChange(item)}
@@ -83,7 +81,6 @@ export function AppSwitcher({
                   <item.logo className="size-3.5 shrink-0" />
                 </div>
                 {item.plan}
-                <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
