@@ -1,7 +1,34 @@
 import { cn } from "@/lib/utils";
 import { ButtonGlass } from "@/components/ui/custom-button-glass";
+import { User } from "lucide-react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 
 const About: React.FC = () => {
+  const [memberCount, setMemberCount] = useState<number | null>(null);
+  const [error, setError] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function fetchMemberCount() {
+      try {
+        const res = await axios.get("https://api.spacewalk.my.id/guild/membercount");
+        const data = res.data;
+        const guildData = data["123456789012345678"]; // ganti dengan guildId kamu
+        if (guildData) {
+          setMemberCount(guildData.memberCount);
+        } else {
+          setError(true);
+        }
+      } catch (err) {
+        console.error("Fetch failed:", err);
+        setError(true);
+      }
+    }
+
+    fetchMemberCount();
+  }, []);
+
   return (
     <section id="about" className={cn(
       'about-sections',
@@ -26,9 +53,21 @@ const About: React.FC = () => {
           Jelajahi dunia luar angkasa dengan pengalaman terbaik di Spacewalk Discord Server.
         </p>
 
-        <ButtonGlass
-          onClick={() => window.location.href = "https://discord.gg/HUPEC4KD2m"}
-        >
+        <div className="mt-6 flex justify-center mb-10">
+          <div className="flex items-center gap-4 bg-[#1f1f2e]/100 backdrop-blur-md border border-white/10 rounded-xl px-6 py-4 shadow-md">
+            <div className="p-2 bg-white/10 rounded-full">
+              <User className="w-5 h-5 text-white" />
+            </div>
+            <div className="text-left text-white">
+              <div className="text-sm font-semibold">Total Members</div>
+              <div className="flex items-center text-xs text-white/70">
+                <User className="text-white" size={13} />
+                <span className="ml-1">{error ? "Bot is offline" : memberCount !== null ? `${memberCount} Members` : "Loading..."}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ButtonGlass onClick={() => window.location.href = "https://discord.gg/HUPEC4KD2m"}>
           Join us
         </ButtonGlass>
 
