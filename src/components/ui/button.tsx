@@ -25,7 +25,6 @@ const buttonVariants = cva(
         "shadow-[0_4px_10px_rgba(255,255,255,0.15)] backdrop-blur-lg " +
         "hover:bg-white/15 hover:shadow-[0_6px_15px_rgba(255,255,255,0.25)] hover:scale-105 " +
         "active:bg-white/25 active:scale-98",
- 
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
