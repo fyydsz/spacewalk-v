@@ -1,5 +1,5 @@
 
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import './App.css'
 import Home from './components/pages/main/Home';
@@ -9,15 +9,13 @@ import About from './components/pages/main/About';
 import Support from './components/pages/main/Support';
 import MainHome from './components/layout/home/main-home';
 import MainDashboard from './components/layout/dashboard/main-dashboard';
-import DashboardHome from './components/pages/dashboard/DashboardHome';
-import DashboardAccount from './components/pages/dashboard/DashboardAccount';
-import DashboardRegisterRP from './components/pages/dashboard/DashboardRegisterRP';
-import DashboardNotFound from './components/pages/dashboard/DashboardNotFound';
+import MainDashboardPage from './components/pages/dashboard/main/DashboardPage';
 import MainNotFound from './components/layout/home/notfound';
+import MainDocsDashboard from './components/layout/dashboard/main-docs-dashboard';
+import DocsDashboardPage from './components/pages/dashboard/docs/DocsDashboardPage';
 
 function App() {
   const location = useLocation();
-  const navigate = useNavigate();
   const isNotFound = location.pathname !== "/";
   useEffect(() => {
     if (location.hash) {
@@ -31,12 +29,6 @@ function App() {
     }
   }, [location]); // Run setiap path berubah
 
-  useEffect(() => {
-    if (location.pathname.endsWith("/") && location.pathname !== "/") {
-      navigate(location.pathname.slice(0, -1), { replace: true });
-    }
-  }, [location, navigate]);
-
   return (
     <div className="App">
       <Routes>
@@ -45,10 +37,10 @@ function App() {
           <Route path="/support" element={<Support />} />
         </Route>
         <Route element={<MainDashboard />}>
-          <Route path='/dashboard' element={<DashboardHome />} />
-          <Route path='/dashboard/register-rp' element={<DashboardRegisterRP />} />
-          <Route path='/dashboard/account' element={<DashboardAccount />} />
-          <Route path='/dashboard/*' element={<DashboardNotFound />} />
+          <Route path='/dashboard' element={<MainDashboardPage />} />
+        </Route>
+        <Route element={<MainDocsDashboard/>}>
+          <Route path='/dashboard-docs' element={<DocsDashboardPage />} />
         </Route>
         <Route element={<MainNotFound />}>
           <Route path='*' element={<NotFound />} />

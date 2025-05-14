@@ -1,9 +1,16 @@
 "use client"
 
+import axios from "axios"
+// import { useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
+
 import {
   BadgeCheck,
+  // Bell,
   ChevronsUpDown,
+  // CreditCard,
   LogOut,
+  // Sparkles,
 } from "lucide-react"
 
 import {
@@ -26,14 +33,12 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import axios from "axios"
-import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+
 
 export function NavUser() {
-  const navigate = useNavigate();
-  const { isMobile, setOpenMobile } = useSidebar();
-  const [user_dc, setUser] = useState<{ username: string; avatar: string; email: string } | null>(null);
+  const { isMobile } = useSidebar();
+  // const navigate = useNavigate();
+  const [userData, setUserData] = useState<{ username: string; avatar: string; email: string } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,7 +46,7 @@ export function NavUser() {
       .get("https://api.spacewalk.my.id/auth/me", { withCredentials: true })
       .then((response) => {
         if (response.data.success) {
-          setUser({
+          setUserData({
             username: response.data.user.username,
             avatar: `https://cdn.discordapp.com/avatars/${response.data.user.id}/${response.data.user.avatar}.png`,
             email: response.data.user.email,
@@ -66,18 +71,8 @@ export function NavUser() {
     }
   };
 
-  const handleGoToAccount = async () => {
-    try {
-      navigate("/dashboard/account");
-      if (isMobile) setOpenMobile(false); // Tutup sidebar jika di mobile
-    } catch (err: any) {
-      console.error(err);
-    }
-  };
-
-  if (loading) return null; // Saat masih loading, jangan tampilkan apa pun
-  if (!user_dc) return null; // Jika tidak ada user yang login, jangan render apa pun
-
+  if (loading) return null; // Optionally, you can show a loading spinner here
+  if (!userData) return null; // Optionally, you can show an error message here
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -88,18 +83,18 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user_dc?.avatar} alt={user_dc?.username} />
+                <AvatarImage src={userData.avatar} alt={userData.username} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user_dc?.username}</span>
-                <span className="truncate text-xs">{user_dc?.email}</span>
+                <span className="truncate font-medium">{userData.username}</span>
+                <span className="truncate text-xs">{userData.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
@@ -107,21 +102,36 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user_dc?.avatar} alt={user_dc?.username || "Test"} />
+                  <AvatarImage src={userData.avatar} alt={userData.username} />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user_dc?.username || "Test"}</span>
-                  <span className="truncate text-xs">{user_dc?.email || "test@example.com"}</span>
+                  <span className="truncate font-medium">{userData.username}</span>
+                  <span className="truncate text-xs">{userData.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
+            {/* <DropdownMenuSeparator /> */}
+            {/* <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <Sparkles />
+                Upgrade to Pro
+              </DropdownMenuItem>
+            </DropdownMenuGroup> */}
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={handleGoToAccount}>
+              <DropdownMenuItem>
                 <BadgeCheck />
-                Account
+                Account Profile
               </DropdownMenuItem>
+              {/* <DropdownMenuItem>
+                <CreditCard />
+                Profile
+              </DropdownMenuItem> */}
+              {/* <DropdownMenuItem>
+                <Bell />
+                Notifications
+              </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
@@ -132,6 +142,6 @@ export function NavUser() {
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  );
+  )
 }
 
