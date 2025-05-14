@@ -5,7 +5,6 @@
 
 /* Tetap memungkinkan scroll dengan smooth */
 html {
-  overflow: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -18,11 +17,6 @@ html::-webkit-scrollbar {
 /* Font Family */
 * {
   font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Hilangkan scrollbar di seluruh halaman */
-body {
-  overflow: hidden;
 }
 
 /* Animation Cursor Blink */
