@@ -16,7 +16,7 @@ const About: React.FC = () => {
         const data = res.data;
         const guildData = data["938696676909121546"];
         if (guildData) {
-          setMemberCount(guildData.memberCount);
+          setMemberCount(guildData.guildMemberCount);
         } else {
           setError(true);
         }
