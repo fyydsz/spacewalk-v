@@ -13,6 +13,7 @@ import MainDashboardPage from './components/pages/dashboard/main/DashboardPage';
 import MainNotFound from './components/layout/home/notfound';
 import MainDocsDashboard from './components/layout/dashboard/main-docs-dashboard';
 import DocsDashboardPage from './components/pages/dashboard/docs/DocsDashboardPage';
+import WikiDocs from './components/pages/main/WikiDocs';
 
 function App() {
   const location = useLocation();
@@ -35,6 +36,7 @@ function App() {
         <Route element={<MainHome />}>
           <Route path="/" element={<Home />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/wiki" element={<WikiDocs />} />
         </Route>
         <Route element={<MainDashboard />}>
           <Route path='/dashboard' element={<MainDashboardPage />} />

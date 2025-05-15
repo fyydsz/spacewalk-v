@@ -106,7 +106,7 @@ const NavBar: React.FC = () => {
         </li>
 
         <li>
-          <Link to="/contact">Our Team</Link>
+          <Link to="/wiki">Wiki Docs</Link>
         </li>
 
         <li>
