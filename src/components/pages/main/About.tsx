@@ -12,7 +12,7 @@ const About: React.FC = () => {
   useEffect(() => {
     async function fetchMemberCount() {
       try {
-        const res = await axios.get("https://api.spacewalk.my.id/guild/membercount");
+        const res = await axios.get("https://api.spacewalk.my.id/guild/stats");
         const data = res.data;
         const guildData = data["938696676909121546"];
         if (guildData) {
