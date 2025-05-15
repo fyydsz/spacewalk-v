@@ -14,9 +14,8 @@ const About: React.FC = () => {
       try {
         const res = await axios.get("https://api.spacewalk.my.id/guild/stats?guildId=938696676909121546");
         const data = res.data;
-        const guildData = data["938696676909121546"];
-        if (guildData) {
-          setMemberCount(guildData.guildMemberCount);
+        if (data.success) {
+          setMemberCount(data.guildMembersCount);
         } else {
           setError(true);
         }
