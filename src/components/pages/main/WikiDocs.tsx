@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 const WikiDocs: React.FC = () => {
-  const fullText = "Redirecting...";
+  const fullText = "Warping...";
   const [text, setText] = useState("");
   const [showCursor] = useState(true);
 
@@ -53,7 +53,7 @@ const WikiDocs: React.FC = () => {
           )}></span>
         </h1>
         <p className={cn("text-[1.2rem]! mb-4")}>
-          Sebentar ya, kami mengalihkan kamu ke halaman yang tepat...
+          Sebentar lagi kamu akan diarahkan ke halaman Wiki Spacewalk.
         </p>
       </div>
     </section>
