@@ -23,8 +23,8 @@ const WikiDocs: React.FC = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      window.location.href = "wiki.spacewalk.my.id"; // Ganti dengan URL yang sesuai
-    }, 5000); // Redirect setelah 3 detik
+      window.location.href = "https://wiki.spacewalk.my.id"; 
+    }, 5000); 
 
     return () => clearTimeout(timer); // Cleanup timer saat komponen unmount
   }, []);
