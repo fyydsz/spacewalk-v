@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { ButtonGlass } from "@/components/ui/custom-button-glass";
 
 const WikiDocs: React.FC = () => {
-  const fullText = "Coming Soon";
+  const fullText = "Redirecting...";
   const [text, setText] = useState("");
   const [showCursor] = useState(true);
 
@@ -20,6 +19,14 @@ const WikiDocs: React.FC = () => {
     type();
 
     return () => { }; // Cleanup tidak perlu karena tidak ada interval
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.location.href = "wiki.spacewalk.my.id"; // Ganti dengan URL yang sesuai
+    }, 5000); // Redirect setelah 3 detik
+
+    return () => clearTimeout(timer); // Cleanup timer saat komponen unmount
   }, []);
 
   return (
@@ -46,9 +53,8 @@ const WikiDocs: React.FC = () => {
           )}></span>
         </h1>
         <p className={cn("text-[1.2rem]! mb-4")}>
-          Wiki documentation bakal segera hadir!
+          Sebentar ya, kami mengalihkan kamu ke halaman yang tepat...
         </p>
-        <ButtonGlass as="link" to="/">Kembali ke Beranda</ButtonGlass>
       </div>
     </section>
   );
