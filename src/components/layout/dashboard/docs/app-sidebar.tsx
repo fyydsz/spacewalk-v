@@ -18,6 +18,7 @@ import { NavMain } from "@/components/layout/dashboard/docs/nav-main"
 import { NavSecondary } from "@/components/layout/dashboard/docs/nav-secondary"
 import { NavWorkspaces } from "@/components/layout/dashboard/docs/nav-workspaces"
 import { AppSwitcher } from "@/components/layout/dashboard/app-switcher"
+import { ModeToggle } from "@/components/mode-toggle"
 import {
   Sidebar,
   SidebarContent,
@@ -267,6 +268,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
+        <div className="flex items-center justify-between px-2 py-2">
+          <ModeToggle />
+        </div>
         <NavUser/>
       </SidebarFooter>
       <SidebarRail />
