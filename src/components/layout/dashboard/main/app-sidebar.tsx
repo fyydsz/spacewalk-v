@@ -16,7 +16,7 @@ import { NavMain } from "@/components/layout/dashboard/main/nav-main"
 // import { NavProjects } from "@/components/layout/dashboard/nav-projects"
 import { NavUser } from "@/components/layout/dashboard/nav-user"
 import { AppSwitcher } from "@/components/layout/dashboard/app-switcher"
-import { ModeToggle } from "@/components/mode-toggle"
+import { NavThemeToggle } from "@/components/layout/dashboard/nav-theme-toggle"
 import {
   Sidebar,
   SidebarContent,
@@ -185,9 +185,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <div className="flex items-center justify-between px-2 py-2">
-          <ModeToggle />
-        </div>
+        <NavThemeToggle />
         <NavUser/>
       </SidebarFooter>
       <SidebarRail />
