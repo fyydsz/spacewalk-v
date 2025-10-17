@@ -4,10 +4,20 @@ import { BrowserRouter } from "react-router-dom";
 import './index.css'
 import App from './App.tsx'
 
-createRoot(document.getElementById('root')!).render(
+// Use StrictMode only in development for better debugging
+// In production, skip it for optimal performance
+const isDevelopment = import.meta.env.DEV;
+
+const AppWrapper = isDevelopment ? (
   <StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
   </StrictMode>
-)
+) : (
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
+
+createRoot(document.getElementById('root')!).render(AppWrapper)
