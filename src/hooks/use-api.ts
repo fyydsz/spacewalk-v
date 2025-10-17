@@ -86,10 +86,24 @@ export const useApi = () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to create character');
+        console.error('[Production] Error response:', errorData);
+        throw new Error(errorData.message || `Failed to create character (${response.status})`);
       }
 
-      return await response.json();
+      const result = await response.json();
+      console.log('[Production] Raw response:', result);
+      
+      // Backend returns "character" instead of "data", normalize it
+      if (result.character && !result.data) {
+        console.log('[Production] Normalizing response: character → data');
+        return {
+          success: result.success,
+          data: result.character,
+          message: result.message,
+        };
+      }
+      
+      return result;
     }
   };
 
