@@ -10,7 +10,7 @@ import { useApi } from "@/hooks/use-api"
 import { customToast } from "@/lib/toast-helpers"
 
 export function UserRegister() {
-  const { user, updateCharacter, mode } = useAuth()
+  const { updateCharacter, mode } = useAuth()
   const api = useApi()
   const [formData, setFormData] = React.useState({
     characterName: "",
@@ -48,7 +48,8 @@ export function UserRegister() {
     }
 
     checkCharacter()
-  }, [user])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Only run once on mount, not when user changes
 
   React.useEffect(() => {
     // Mobile Checker
