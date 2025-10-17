@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Info, Loader2 } from "lucide-react"
 import { useAuth } from "@/context/auth-context"
 import { useApi } from "@/hooks/use-api"
+import { customToast } from "@/lib/toast-helpers"
 
 export function UserRegister() {
   const { user, updateCharacter, mode } = useAuth()
@@ -174,9 +175,15 @@ export function UserRegister() {
         // Update user context with new character
         updateCharacter(data.data)
         
-        // Reload component to show character info
-        setHasCharacter(true)
+        // Show success toast
+        customToast.success(
+          "Registrasi Berhasil!", 
+          "Karakter Anda telah berhasil dibuat, welcome to Spacewalk!"
+        )
+        
+        // Set character data and switch to character view
         setCharacterData(data.data)
+        setHasCharacter(true)
       } else {
         setSubmitError(data.message || "Terjadi kesalahan")
       }

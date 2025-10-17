@@ -119,7 +119,7 @@ export const mockApiResponses = {
     
     return {
       success: true,
-      character: newCharacter,
+      data: newCharacter,
       message: 'Character created successfully',
     };
   },
