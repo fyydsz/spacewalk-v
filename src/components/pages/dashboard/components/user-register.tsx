@@ -126,7 +126,7 @@ export function UserRegister() {
     setSubmitError("")
     
     // Validasi manual
-    if (!formData.username || formData.username.length < 4) {
+    if (!formData.username || formData.username.length < 4 || formData.username.length > 30) {
       setSubmitError("Mohon lengkapi semua field dengan benar")
       return
     }
@@ -277,7 +277,8 @@ export function UserRegister() {
                 className="pl-7"
                 pattern="[a-zA-Z0-9._-]+"
                 minLength={4}
-                title="Hanya huruf, angka, underscore (_), dash (-), dan titik (.). Minimal 4 karakter"
+                maxLength={30}
+                title="Hanya huruf, angka, underscore (_), dash (-), dan titik (.). Minimal 4 karakter, maksimal 30 karakter"
                 required
                 disabled={usernameChecking}
               />
@@ -290,6 +291,11 @@ export function UserRegister() {
             {formData.username && formData.username.length < 4 && !usernameChecking && (
               <p className="text-xs text-destructive">
                 Minimal 4 karakter
+              </p>
+            )}
+            {formData.username && formData.username.length > 30 && !usernameChecking && (
+              <p className="text-xs text-destructive">
+                Maksimal 30 karakter
               </p>
             )}
           </div>
