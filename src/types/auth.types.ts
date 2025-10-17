@@ -9,14 +9,13 @@ export interface DiscordUser {
 }
 
 export interface Character {
-  charId: string;
+  discordId: string;
   charUsername: string;
-  charNickname: string;
-  charLevel: number;
-  charExp: number;
-  charGold: number;
-  charClass?: string;
-  createdAt?: string;
+  charName: string;
+  charAge: number;
+  charGender: "Laki-laki" | "Perempuan";
+  charCreatedAt?: string;
+  charUpdatedAt?: string;
 }
 
 export interface User {

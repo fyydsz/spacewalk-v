@@ -58,8 +58,9 @@ export const useApi = () => {
 
   const createCharacter = async (data: {
     username: string;
-    nickname: string;
-    class: string;
+    name: string;
+    age: number;
+    gender: "Laki-laki" | "Perempuan";
   }): Promise<ApiResponse<Character>> => {
     if (mode === 'development') {
       // Use mock API

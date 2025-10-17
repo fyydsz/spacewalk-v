@@ -157,8 +157,9 @@ export function UserRegister() {
       // Promise untuk API call
       const apiCall = api.createCharacter({
         username: formData.username,
-        nickname: formData.characterName,
-        class: formData.gender // Using gender as class for now
+        name: formData.characterName,
+        age: parseInt(formData.age),
+        gender: formData.gender as "Laki-laki" | "Perempuan"
       })
 
       // Promise untuk minimum delay 1.5 detik
@@ -209,15 +210,15 @@ export function UserRegister() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Character Name</span>
-                    <span className="font-semibold">{characterData?.characterName || 'Unknown'}</span>
+                    <span className="font-semibold">{characterData?.charName || 'Unknown'}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Age</span>
-                    <span className="font-semibold">{characterData?.age || '-'} years old</span>
+                    <span className="font-semibold">{characterData?.charAge || '-'} years old</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Gender</span>
-                    <span className="font-semibold">{characterData?.gender || '-'}</span>
+                    <span className="font-semibold">{characterData?.charGender || '-'}</span>
                   </div>
                 </div>
               </div>

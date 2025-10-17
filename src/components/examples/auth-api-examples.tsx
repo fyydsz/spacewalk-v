@@ -28,8 +28,9 @@ export function ExampleComponent() {
     try {
       const result = await api.createCharacter({
         username: 'myusername',
-        nickname: 'My Character Name',
-        class: 'Warrior'
+        name: 'My Character Name',
+        age: 25,
+        gender: 'Laki-laki'
       });
       
       if (result.success && result.data) {
@@ -58,7 +59,7 @@ export function ExampleComponent() {
               <p className="text-sm">Discord ID: {user?.discordId}</p>
               {user?.character ? (
                 <p className="text-sm">
-                  Character: {user.character.charUsername} (Level {user.character.charLevel})
+                  Character: {user.character.charName} (@{user.character.charUsername})
                 </p>
               ) : (
                 <p className="text-sm text-muted-foreground">No character yet</p>
@@ -149,9 +150,10 @@ export function CharacterRequiredComponent() {
 
   return (
     <div>
-      <h2>Character: {user.character.charUsername}</h2>
-      <p>Level: {user.character.charLevel}</p>
-      <p>Gold: {user.character.charGold}</p>
+      <h2>Character: {user.character.charName}</h2>
+      <p>Username: @{user.character.charUsername}</p>
+      <p>Age: {user.character.charAge}</p>
+      <p>Gender: {user.character.charGender}</p>
     </div>
   );
 }
@@ -221,8 +223,9 @@ export function useCharacterActions() {
 
   const createCharacter = async (data: {
     username: string;
-    nickname: string;
-    class: string;
+    name: string;
+    age: number;
+    gender: "Laki-laki" | "Perempuan";
   }) => {
     setLoading(true);
     try {
@@ -254,8 +257,9 @@ export function CreateCharacterForm() {
   const handleSubmit = async () => {
     const result = await createCharacter({
       username: 'myusername',
-      nickname: 'My Character',
-      class: 'Warrior',
+      name: 'My Character',
+      age: 25,
+      gender: 'Laki-laki',
     });
 
     if (result.success) {

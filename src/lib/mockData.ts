@@ -3,34 +3,31 @@ import { User, Character } from '@/types/auth.types';
 // Mock Characters
 export const mockCharacters: Character[] = [
   {
-    charId: 'char_001',
+    discordId: '123456789012345678',
     charUsername: 'spacewalker',
-    charNickname: 'Space Walker',
-    charLevel: 25,
-    charExp: 12500,
-    charGold: 50000,
-    charClass: 'Explorer',
-    createdAt: new Date('2024-01-15').toISOString(),
+    charName: 'Space Walker',
+    charAge: 25,
+    charGender: 'Laki-laki',
+    charCreatedAt: new Date('2024-01-15').toISOString(),
+    charUpdatedAt: new Date('2024-01-15').toISOString(),
   },
   {
-    charId: 'char_002',
+    discordId: '111222333444555666',
     charUsername: 'nova_knight',
-    charNickname: 'Nova Knight',
-    charLevel: 30,
-    charExp: 18000,
-    charGold: 75000,
-    charClass: 'Warrior',
-    createdAt: new Date('2024-02-20').toISOString(),
+    charName: 'Nova Knight',
+    charAge: 28,
+    charGender: 'Perempuan',
+    charCreatedAt: new Date('2024-02-20').toISOString(),
+    charUpdatedAt: new Date('2024-02-20').toISOString(),
   },
   {
-    charId: 'char_003',
+    discordId: '999888777666555444',
     charUsername: 'star_mage',
-    charNickname: 'Star Mage',
-    charLevel: 28,
-    charExp: 15000,
-    charGold: 65000,
-    charClass: 'Mage',
-    createdAt: new Date('2024-03-10').toISOString(),
+    charName: 'Star Mage',
+    charAge: 22,
+    charGender: 'Perempuan',
+    charCreatedAt: new Date('2024-03-10').toISOString(),
+    charUpdatedAt: new Date('2024-03-10').toISOString(),
   },
 ];
 
@@ -105,17 +102,16 @@ export const mockApiResponses = {
     };
   },
 
-  createCharacter: async (data: { username: string; nickname: string; class: string }) => {
+  createCharacter: async (data: { username: string; name: string; age: number; gender: "Laki-laki" | "Perempuan" }) => {
     await mockApiDelay();
     const newCharacter: Character = {
-      charId: `char_${Date.now()}`,
+      discordId: currentMockUser.discordId,
       charUsername: data.username,
-      charNickname: data.nickname,
-      charLevel: 1,
-      charExp: 0,
-      charGold: 1000,
-      charClass: data.class,
-      createdAt: new Date().toISOString(),
+      charName: data.name,
+      charAge: data.age,
+      charGender: data.gender,
+      charCreatedAt: new Date().toISOString(),
+      charUpdatedAt: new Date().toISOString(),
     };
     
     // Update current mock user
