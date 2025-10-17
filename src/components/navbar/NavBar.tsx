@@ -46,7 +46,7 @@ const NavBar: React.FC = () => {
     } else {
       // Production mode - check authentication
       if (isAuthenticated) {
-        navigate('/dashboard');
+        window.location.href = "/dashboard";
       } else {
         // Redirect to Discord OAuth
         login();
