@@ -18,6 +18,7 @@ export function UserRegister() {
   const [isMobile, setIsMobile] = React.useState(false)
   const [submitError, setSubmitError] = React.useState("")
   const [hasCharacter, setHasCharacter] = React.useState<boolean | null>(null)
+  const [characterData, setCharacterData] = React.useState<any>(null)
   const [loading, setLoading] = React.useState(false)
   const [usernameChecking, setUsernameChecking] = React.useState(false)
 
@@ -32,6 +33,7 @@ export function UserRegister() {
         
         if (data.success && data.hasCharacter) {
           setHasCharacter(true)
+          setCharacterData(data.character)
           console.log("User already has character:", data.character)
         } else {
           setHasCharacter(false)
@@ -196,10 +198,50 @@ export function UserRegister() {
   if (hasCharacter === true) {
     return (
       <div className="w-full px-4 sm:px-6 md:px-0">
-        <Card className="w-full max-w-md mx-auto">
-          <CardContent className="text-center p-8">
-            <h2 className="text-2xl font-bold mb-2">Kamu sudah memiliki karakter!</h2>
-            <p className="text-muted-foreground">Silakan lanjutkan ke dashboard</p>
+        <Card className="w-full max-w-2xl mx-auto">
+          <CardContent className="p-8 md:p-12">
+            <div className="text-center space-y-6">
+              {/* Welcome Message */}
+              <div className="space-y-2">
+                <h1 className="text-3xl md:text-4xl font-bold">
+                  Welcome Back!
+                </h1>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-xl md:text-2xl text-muted-foreground">@{characterData?.username || 'Traveler'}</span>
+                </div>
+              </div>
+
+              {/* Character Info Card */}
+              <div className="bg-muted/50 rounded-lg p-6 space-y-4">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Character Name</span>
+                    <span className="font-semibold">{characterData?.characterName || 'Unknown'}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Age</span>
+                    <span className="font-semibold">{characterData?.age || '-'} years old</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Gender</span>
+                    <span className="font-semibold">{characterData?.gender || '-'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Description */}
+              <p className="text-muted-foreground">
+                Selamat datang kembali di Spacewalk! Lanjutkan petualanganmu dan jelajahi dunia baru.
+              </p>
+
+              {/* Action Button */}
+              <Button 
+                className="w-full md:w-auto px-8 cursor-pointer"
+                onClick={() => window.location.href = '/dashboard'}
+              >
+                Lanjutkan Petualangan
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
