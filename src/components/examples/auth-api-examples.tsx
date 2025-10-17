@@ -29,7 +29,7 @@ export function ExampleComponent() {
       const result = await api.createCharacter({
         username: 'myusername',
         name: 'My Character Name',
-        age: 25,
+        birthday: '1999-05-15', // Format: YYYY-MM-DD
         gender: 'Laki-laki'
       });
       
@@ -148,11 +148,30 @@ export function CharacterRequiredComponent() {
     return <div>Please create a character first</div>;
   }
 
+  // Calculate age from birthday
+  const calculateAge = (birthday: string): number => {
+    const today = new Date();
+    const birthDate = new Date(birthday);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const age = calculateAge(user.character.charBirthday);
+
   return (
     <div>
       <h2>Character: {user.character.charName}</h2>
       <p>Username: @{user.character.charUsername}</p>
-      <p>Age: {user.character.charAge}</p>
+      <p>Birthday: {new Date(user.character.charBirthday).toLocaleDateString('id-ID', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })}</p>
+      <p>Age: {age} years old</p>
       <p>Gender: {user.character.charGender}</p>
     </div>
   );
@@ -224,7 +243,7 @@ export function useCharacterActions() {
   const createCharacter = async (data: {
     username: string;
     name: string;
-    age: number;
+    birthday: string; // Format: YYYY-MM-DD
     gender: "Laki-laki" | "Perempuan";
   }) => {
     setLoading(true);
@@ -258,7 +277,7 @@ export function CreateCharacterForm() {
     const result = await createCharacter({
       username: 'myusername',
       name: 'My Character',
-      age: 25,
+      birthday: '1999-05-15', // Format: YYYY-MM-DD
       gender: 'Laki-laki',
     });
 

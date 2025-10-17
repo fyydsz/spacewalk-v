@@ -4,7 +4,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { Info, Loader2 } from "lucide-react"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
+import { Info, Loader2, ChevronDown } from "lucide-react"
 import { useAuth } from "@/context/auth-context"
 import { useApi } from "@/hooks/use-api"
 import { customToast } from "@/lib/toast-helpers"
@@ -14,12 +16,13 @@ export function UserRegister() {
   const api = useApi()
   const [formData, setFormData] = React.useState({
     characterName: "",
-    age: "",
+    birthday: undefined as Date | undefined,
     gender: "",
     username: ""
   })
 
   const [tooltipOpen, setTooltipOpen] = React.useState(false)
+  const [calendarOpen, setCalendarOpen] = React.useState(false)
   const [isMobile, setIsMobile] = React.useState(false)
   const [submitError, setSubmitError] = React.useState("")
   const [hasCharacter, setHasCharacter] = React.useState<boolean | null>(null)
@@ -146,8 +149,24 @@ export function UserRegister() {
       return
     }
     
-    if (!formData.age || parseInt(formData.age) < 13 || parseInt(formData.age) > 100) {
+    // Validate birthday
+    if (!formData.birthday) {
       setSubmitError("Mohon lengkapi semua field dengan benar")
+      return
+    }
+    
+    // Calculate age from birthday
+    const today = new Date()
+    const birthDate = new Date(formData.birthday)
+    let age = today.getFullYear() - birthDate.getFullYear()
+    const monthDiff = today.getMonth() - birthDate.getMonth()
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--
+    }
+    
+    // Validate age (13-100 years old)
+    if (age < 13 || age > 100) {
+      setSubmitError("Umur karakter harus antara 13-100 tahun")
       return
     }
     
@@ -163,7 +182,7 @@ export function UserRegister() {
       const apiCall = api.createCharacter({
         username: formData.username,
         name: formData.characterName,
-        age: parseInt(formData.age),
+        birthday: formData.birthday!.toISOString().split('T')[0], // Format: YYYY-MM-DD
         gender: formData.gender as "Laki-laki" | "Perempuan"
       })
 
@@ -231,8 +250,17 @@ export function UserRegister() {
                     <span className="font-semibold">{characterData?.charName || 'Unknown'}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Age</span>
-                    <span className="font-semibold">{characterData?.charAge || '-'} years old</span>
+                    <span className="text-sm text-muted-foreground">Birthday</span>
+                    <span className="font-semibold">
+                      {characterData?.charBirthday 
+                        ? new Date(characterData.charBirthday).toLocaleDateString('id-ID', {
+                            year: 'numeric',
+                            month: 'long', 
+                            day: 'numeric'
+                          })
+                        : '-'
+                      }
+                    </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Gender</span>
@@ -370,26 +398,60 @@ export function UserRegister() {
             )}
           </div>
 
-          {/* Umur */}
+          {/* Tanggal Lahir dengan Calendar Picker */}
           <div className="space-y-2">
-            <Label htmlFor="age">Umur karakter</Label>
-            <Input
-              id="age"
-              name="age"
-              type="number"
-              placeholder="Masukkan umur"
-              value={formData.age}
-              onChange={handleInputChange}
-              min="13"
-              max="100"
-              required
-            />
-            {formData.age && (parseInt(formData.age) < 13 || parseInt(formData.age) > 100) && (
-              <p className="text-xs text-destructive">
-                Umur harus antara 13-100 tahun
-              </p>
-            )}
-
+            <Label htmlFor="birthday">Tanggal Lahir</Label>
+            <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  id="birthday"
+                  className="w-full justify-between font-normal"
+                >
+                  {formData.birthday ? formData.birthday.toLocaleDateString('id-ID', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  }) : "Pilih tanggal lahir"}
+                  <ChevronDown className="h-4 w-4 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={formData.birthday}
+                  captionLayout="dropdown"
+                  fromYear={1924}
+                  toYear={2012}
+                  onSelect={(date) => {
+                    setFormData(prev => ({ ...prev, birthday: date }))
+                    setCalendarOpen(false)
+                    if (submitError) setSubmitError("")
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+            {formData.birthday && (() => {
+              const today = new Date()
+              const birthDate = new Date(formData.birthday)
+              let age = today.getFullYear() - birthDate.getFullYear()
+              const monthDiff = today.getMonth() - birthDate.getMonth()
+              if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--
+              }
+              if (age < 13 || age > 100) {
+                return (
+                  <p className="text-xs text-destructive">
+                    Umur karakter harus antara 13-100 tahun
+                  </p>
+                )
+              }
+              return (
+                <p className="text-xs text-muted-foreground">
+                  Umur karakter: {age} tahun
+                </p>
+              )
+            })()}
           </div>
 
           {/* Gender */}

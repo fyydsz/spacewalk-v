@@ -12,7 +12,7 @@ export interface Character {
   discordId: string;
   charUsername: string;
   charName: string;
-  charAge: number;
+  charBirthday: string; // Format: ISO date string (YYYY-MM-DD)
   charGender: "Laki-laki" | "Perempuan";
   charCreatedAt?: string;
   charUpdatedAt?: string;

@@ -59,7 +59,7 @@ export const useApi = () => {
   const createCharacter = async (data: {
     username: string;
     name: string;
-    age: number;
+    birthday: string; // ISO date string
     gender: "Laki-laki" | "Perempuan";
   }): Promise<ApiResponse<Character>> => {
     if (mode === 'development') {
@@ -71,7 +71,7 @@ export const useApi = () => {
       const requestBody = {
         charUsername: data.username,
         charName: data.name,
-        charAge: data.age,
+        charBirthday: data.birthday,
         charGender: data.gender,
       };
 

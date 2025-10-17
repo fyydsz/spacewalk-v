@@ -6,7 +6,7 @@ export const mockCharacters: Character[] = [
     discordId: '123456789012345678',
     charUsername: 'spacewalker',
     charName: 'Space Walker',
-    charAge: 25,
+    charBirthday: '1999-05-15',
     charGender: 'Laki-laki',
     charCreatedAt: new Date('2024-01-15').toISOString(),
     charUpdatedAt: new Date('2024-01-15').toISOString(),
@@ -15,7 +15,7 @@ export const mockCharacters: Character[] = [
     discordId: '111222333444555666',
     charUsername: 'nova_knight',
     charName: 'Nova Knight',
-    charAge: 28,
+    charBirthday: '1996-08-20',
     charGender: 'Perempuan',
     charCreatedAt: new Date('2024-02-20').toISOString(),
     charUpdatedAt: new Date('2024-02-20').toISOString(),
@@ -24,7 +24,7 @@ export const mockCharacters: Character[] = [
     discordId: '999888777666555444',
     charUsername: 'star_mage',
     charName: 'Star Mage',
-    charAge: 22,
+    charBirthday: '2002-03-10',
     charGender: 'Perempuan',
     charCreatedAt: new Date('2024-03-10').toISOString(),
     charUpdatedAt: new Date('2024-03-10').toISOString(),
@@ -102,13 +102,13 @@ export const mockApiResponses = {
     };
   },
 
-  createCharacter: async (data: { username: string; name: string; age: number; gender: "Laki-laki" | "Perempuan" }) => {
+  createCharacter: async (data: { username: string; name: string; birthday: string; gender: "Laki-laki" | "Perempuan" }) => {
     await mockApiDelay();
     const newCharacter: Character = {
       discordId: currentMockUser.discordId,
       charUsername: data.username,
       charName: data.name,
-      charAge: data.age,
+      charBirthday: data.birthday,
       charGender: data.gender,
       charCreatedAt: new Date().toISOString(),
       charUpdatedAt: new Date().toISOString(),
