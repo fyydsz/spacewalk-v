@@ -182,7 +182,8 @@ export function UserRegister() {
       }
     } catch (error) {
       console.error("Error registering character:", error)
-      setSubmitError("Terjadi kesalahan saat mendaftar")
+      const errorMessage = error instanceof Error ? error.message : "Terjadi kesalahan saat mendaftar"
+      setSubmitError(errorMessage)
     } finally {
       setLoading(false)
     }

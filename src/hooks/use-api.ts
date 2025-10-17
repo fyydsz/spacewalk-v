@@ -67,17 +67,26 @@ export const useApi = () => {
       return await mockApiResponses.createCharacter(data);
     } else {
       // Use real API
+      // Map frontend field names to backend field names
+      const requestBody = {
+        charUsername: data.username,
+        charName: data.name,
+        charAge: data.age,
+        charGender: data.gender,
+      };
+
       const response = await fetch(`${apiBaseUrl}/char/create-character`, {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create character');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to create character');
       }
 
       return await response.json();
