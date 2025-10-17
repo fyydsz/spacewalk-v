@@ -17,6 +17,7 @@ import WikiDocs from './components/pages/main/WikiDocs';
 import { ThemeProvider } from '@/components/theme-provider';
 import { AuthProvider } from '@/context/auth-context';
 import { DevModeIndicator } from '@/components/dev-mode-indicator';
+import { Toaster } from '@/components/ui/sonner';
 
 function App() {
   const location = useLocation();
@@ -57,6 +58,9 @@ function App() {
           
           {/* Development Mode Indicator - Only shows in dev mode */}
           <DevModeIndicator />
+          
+          {/* Toast notifications */}
+          <Toaster position="top-right" duration={7000} />
         </div>
       </AuthProvider>
     </ThemeProvider>
