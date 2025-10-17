@@ -19,7 +19,7 @@ export const useApi = () => {
     } else {
       // Use real API
       const response = await fetch(
-        `${apiBaseUrl}/user/check-username?charUsername=${encodeURIComponent(username)}`,
+        `${apiBaseUrl}/char/check-username?charUsername=${encodeURIComponent(username)}`,
         {
           method: 'GET',
           credentials: 'include',
@@ -43,7 +43,7 @@ export const useApi = () => {
       return await mockApiResponses.checkCharacter(user);
     } else {
       // Use real API
-      const response = await fetch(`${apiBaseUrl}/user/check-character`, {
+      const response = await fetch(`${apiBaseUrl}/char/check-character`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -67,7 +67,7 @@ export const useApi = () => {
       return await mockApiResponses.createCharacter(data);
     } else {
       // Use real API
-      const response = await fetch(`${apiBaseUrl}/user/create-character`, {
+      const response = await fetch(`${apiBaseUrl}/char/create-character`, {
         method: 'POST',
         credentials: 'include',
         headers: {
