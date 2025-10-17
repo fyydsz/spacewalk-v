@@ -1,8 +1,7 @@
 "use client"
 
-import axios from "axios"
-// import { useNavigate } from "react-router-dom"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
+import { useAuth } from "@/context/auth-context"
 
 import {
   BadgeCheck,
@@ -37,42 +36,46 @@ import {
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  // const navigate = useNavigate();
-  const [userData, setUserData] = useState<{ username: string; avatar: string; email: string } | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, isAuthenticated, isLoading, logout, login, mode } = useAuth();
 
+  // If not authenticated in production mode, redirect to login
   useEffect(() => {
-    axios
-      .get("https://api.spacewalk.my.id/auth/me", { withCredentials: true })
-      .then((response) => {
-        if (response.data.success) {
-          setUserData({
-            username: response.data.user.username,
-            avatar: `https://cdn.discordapp.com/avatars/${response.data.user.id}/${response.data.user.avatar}.png`,
-            email: response.data.user.email,
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to fetch user data:", error.response?.data || error.message);
-        window.location.href = "https://api.spacewalk.my.id/auth/discord"; // Redirect ke halaman login
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+    if (!isLoading && !isAuthenticated && mode === 'production') {
+      // Only redirect in production mode
+      login();
+    }
+  }, [isLoading, isAuthenticated, mode]);
 
   const handleLogout = async () => {
-    try {
-      await axios.post("https://api.spacewalk.my.id/auth/logout", {}, { withCredentials: true });
-      window.location.href = "https://www.spacewalk.my.id"; // Redirect ke halaman utama
-    } catch (error: any) {
-      console.error("Logout failed:", error.response?.data || error.message);
+    await logout();
+    // In production, redirect to home page
+    if (mode === 'production') {
+      window.location.href = "https://www.spacewalk.my.id";
     }
   };
 
-  if (loading) return null; // Optionally, you can show a loading spinner here
-  if (!userData) return null; // Optionally, you can show an error message here
+  // Show loading state
+  if (isLoading) return null;
+  
+  // In development mode, always show user (from mock data)
+  // In production mode, only show if authenticated
+  if (!user && mode === 'production') return null;
+
+  // Get avatar URL helper
+  const getAvatarUrl = () => {
+    if (user?.avatar) {
+      return `https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.png`;
+    }
+    // Default Discord avatar
+    const defaultAvatarIndex = user?.discriminator ? parseInt(user.discriminator) % 5 : 0;
+    return `https://cdn.discordapp.com/embed/avatars/${defaultAvatarIndex}.png`;
+  };
+
+  const displayName = user?.globalName || user?.username || 'User';
+  const displayEmail = user?.email || `${user?.username}@discord.com`;
+  const avatarUrl = getAvatarUrl();
+  const initials = displayName.substring(0, 2).toUpperCase();
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -83,12 +86,12 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={userData.avatar} alt={userData.username} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarImage src={avatarUrl} alt={displayName} />
+                <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{userData.username}</span>
-                <span className="truncate text-xs">{userData.email}</span>
+                <span className="truncate font-medium">{displayName}</span>
+                <span className="truncate text-xs">{displayEmail}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -102,12 +105,12 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={userData.avatar} alt={userData.username} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarImage src={avatarUrl} alt={displayName} />
+                  <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{userData.username}</span>
-                  <span className="truncate text-xs">{userData.email}</span>
+                  <span className="truncate font-medium">{displayName}</span>
+                  <span className="truncate text-xs">{displayEmail}</span>
                 </div>
               </div>
             </DropdownMenuLabel>

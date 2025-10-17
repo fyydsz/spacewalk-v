@@ -15,6 +15,8 @@ import MainDocsDashboard from './components/layout/dashboard/main-docs-dashboard
 import DocsDashboardPage from './components/pages/dashboard/docs/DocsDashboardPage';
 import WikiDocs from './components/pages/main/WikiDocs';
 import { ThemeProvider } from '@/components/theme-provider';
+import { AuthProvider } from '@/context/auth-context';
+import { DevModeIndicator } from '@/components/dev-mode-indicator';
 
 function App() {
   const location = useLocation();
@@ -33,25 +35,30 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="App">
-        <Routes>
-          <Route element={<MainHome />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/support" element={<Support />} />
-            <Route path="/wiki" element={<WikiDocs />} />
-          </Route>
-          <Route element={<MainDashboard />}>
-            <Route path='/dashboard' element={<MainDashboardPage />} />
-          </Route>
-          <Route element={<MainDocsDashboard/>}>
-            <Route path='/dashboard-docs' element={<DocsDashboardPage />} />
-          </Route>
-          <Route element={<MainNotFound />}>
-            <Route path='*' element={<NotFound />} />
-          </Route>
-        </Routes>
-        {!isNotFound && <About />}
-      </div>
+      <AuthProvider>
+        <div className="App">
+          <Routes>
+            <Route element={<MainHome />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/support" element={<Support />} />
+              <Route path="/wiki" element={<WikiDocs />} />
+            </Route>
+            <Route element={<MainDashboard />}>
+              <Route path='/dashboard' element={<MainDashboardPage />} />
+            </Route>
+            <Route element={<MainDocsDashboard/>}>
+              <Route path='/dashboard-docs' element={<DocsDashboardPage />} />
+            </Route>
+            <Route element={<MainNotFound />}>
+              <Route path='*' element={<NotFound />} />
+            </Route>
+          </Routes>
+          {!isNotFound && <About />}
+          
+          {/* Development Mode Indicator - Only shows in dev mode */}
+          <DevModeIndicator />
+        </div>
+      </AuthProvider>
     </ThemeProvider>
   )
 }

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import "./navbar.css";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/auth-context";
 
 const NavBar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,6 +11,7 @@ const NavBar: React.FC = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const { isAuthenticated, login, mode } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,24 +38,21 @@ const NavBar: React.FC = () => {
     return () => document.removeEventListener("click", handleClickOutside);
   }, [menuOpen]);
 
-  const handleLogin = async () => {
-    try {
-      // Your async code here, e.g., fetching data
-      const res = await axios.get('https://api.spacewalk.my.id/auth/me', { withCredentials: true });
-      if (res.status === 401) {
-        console.warn("User not authenticated, skipping user setup.");
-        return;
-      }
-
-      if (res.data.success) {
-        window.location.href = "/dashboard"
+  const handleDashboardClick = () => {
+    if (mode === 'development') {
+      // Development mode - always allow access to dashboard
+      console.log('🎭 Development Mode: Navigating to dashboard with mock user');
+      navigate('/dashboard');
+    } else {
+      // Production mode - check authentication
+      if (isAuthenticated) {
+        navigate('/dashboard');
       } else {
-        window.location.href = "https://api.spacewalk.my.id/auth/discord";
+        // Redirect to Discord OAuth
+        login();
       }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      window.location.href = "https://api.spacewalk.my.id/auth/discord";
     }
+    setMenuOpen(false);
   };
 
   const scrollToSection = (id: string) => {
@@ -114,7 +112,7 @@ const NavBar: React.FC = () => {
         </li>
 
         <li>
-          <Button variant="glass" onClick={handleLogin} className={cn("buttonglass ml-3")}>
+          <Button variant="glass" onClick={handleDashboardClick} className={cn("buttonglass ml-3")}>
             Dashboard
           </Button>
         </li>

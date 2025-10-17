@@ -5,8 +5,12 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Info, Loader2 } from "lucide-react"
+import { useAuth } from "@/context/auth-context"
+import { useApi } from "@/hooks/use-api"
 
 export function UserRegister() {
+  const { user, updateCharacter, mode } = useAuth()
+  const api = useApi()
   const [formData, setFormData] = React.useState({
     characterName: "",
     age: "",
@@ -26,17 +30,15 @@ export function UserRegister() {
   React.useEffect(() => {
     const checkCharacter = async () => {
       try {
-        const response = await fetch('https://api.spacewalk.my.id/user/check-character', {
-          credentials: 'include'
-        })
-        const data = await response.json()
+        const data = await api.checkCharacter()
         
-        if (data.success && data.hasCharacter) {
+        if (data.hasCharacter && data.character) {
           setHasCharacter(true)
           setCharacterData(data.character)
-          console.log("User already has character:", data.character)
+          console.log(`[${mode} mode] User already has character:`, data.character)
         } else {
           setHasCharacter(false)
+          console.log(`[${mode} mode] User has no character yet`)
         }
       } catch (error) {
         console.error("Error checking character:", error)
@@ -45,7 +47,7 @@ export function UserRegister() {
     }
 
     checkCharacter()
-  }, [])
+  }, [user])
 
   React.useEffect(() => {
     // Mobile Checker
@@ -99,13 +101,9 @@ export function UserRegister() {
 
     setUsernameChecking(true)
     try {
-      const response = await fetch(
-        `https://api.spacewalk.my.id/user/check-username?charUsername=${encodeURIComponent(formData.username)}`,
-        { credentials: 'include' }
-      )
-      const data = await response.json()
+      const data = await api.checkUsername(formData.username)
       
-      if (data.success && !data.available) {
+      if (!data.available) {
         setSubmitError("Username sudah digunakan")
       }
     } catch (error) {
@@ -157,34 +155,29 @@ export function UserRegister() {
 
     try {
       // Promise untuk API call
-      const apiCall = fetch('https://api.spacewalk.my.id/user/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          charUsername: formData.username,
-          characterName: formData.characterName,
-          age: parseInt(formData.age),
-          gender: formData.gender
-        })
+      const apiCall = api.createCharacter({
+        username: formData.username,
+        nickname: formData.characterName,
+        class: formData.gender // Using gender as class for now
       })
 
       // Promise untuk minimum delay 1.5 detik
       const minDelay = new Promise(resolve => setTimeout(resolve, 1500))
 
       // Tunggu kedua promise selesai
-      const [response] = await Promise.all([apiCall, minDelay])
+      const [data] = await Promise.all([apiCall, minDelay])
 
-      const data = await response.json()
-
-      if (data.success) {
-        console.log("Character created:", data.character)
-        // Redirect ke dashboard atau halaman lain
-        window.location.href = '/dashboard'
+      if (data.success && data.data) {
+        console.log(`[${mode} mode] Character created:`, data.data)
+        
+        // Update user context with new character
+        updateCharacter(data.data)
+        
+        // Reload component to show character info
+        setHasCharacter(true)
+        setCharacterData(data.data)
       } else {
-        setSubmitError(data.error?.message || "Terjadi kesalahan")
+        setSubmitError(data.message || "Terjadi kesalahan")
       }
     } catch (error) {
       console.error("Error registering character:", error)
