@@ -185,12 +185,18 @@ export function UserRegister() {
         setCharacterData(data.data)
         setHasCharacter(true)
       } else {
+        console.error('[Registration] API returned unsuccessful:', data);
         setSubmitError(data.message || "Terjadi kesalahan")
       }
     } catch (error) {
-      console.error("Error registering character:", error)
+      console.error("[Registration] Error details:", error)
       const errorMessage = error instanceof Error ? error.message : "Terjadi kesalahan saat mendaftar"
       setSubmitError(errorMessage)
+      
+      // Show error toast in production
+      if (mode === 'production') {
+        customToast.error("Registrasi Gagal", errorMessage)
+      }
     } finally {
       setLoading(false)
     }
