@@ -12,6 +12,7 @@ import {
   // SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { UserRegister } from "../components/user-register"
 // import RecentActivity from "./components/activity"
 // import ProjectProgress from "./components/progress"
 // import DashboardSummary from "./components/summary"
@@ -38,13 +39,9 @@ export default function MainDashboardPage() {
           </Breadcrumb>
         </div>
       </header>
-      <div className="flex flex-1 flex-col gap-4 overflow-auto p-4 pt-6">
-        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-          <div className="aspect-video rounded-xl bg-muted/50" />
-          <div className="aspect-video rounded-xl bg-muted/50" />
-          <div className="aspect-video rounded-xl bg-muted/50" />
-        </div>
-        <div className="h-[300vh]"></div>
+      {/* MAIN CONTENT */}
+      <div className="flex items-center justify-center flex-1">
+        <UserRegister />
       </div>
     </SidebarInset>
 
