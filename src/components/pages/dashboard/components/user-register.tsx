@@ -31,6 +31,8 @@ export function UserRegister() {
   const [usernameChecking, setUsernameChecking] = React.useState(false)
 
   // Check if user already has a character on component mount
+  // In production: only check once on mount
+  // In development: re-check when user changes (for mock data flexibility)
   React.useEffect(() => {
     const checkCharacter = async () => {
       try {
@@ -52,7 +54,7 @@ export function UserRegister() {
 
     checkCharacter()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // Only run once on mount, not when user changes
+  }, mode === 'production' ? [] : [mode, api]) // Production: run once, Development: allow re-check
 
   React.useEffect(() => {
     // Mobile Checker
