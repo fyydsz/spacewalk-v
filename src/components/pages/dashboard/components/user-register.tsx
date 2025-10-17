@@ -100,7 +100,7 @@ export function UserRegister() {
     setUsernameChecking(true)
     try {
       const response = await fetch(
-        `https://api.spacewalk.my.id/user/check-username?username=${encodeURIComponent(formData.username)}`,
+        `https://api.spacewalk.my.id/user/check-username?charUsername=${encodeURIComponent(formData.username)}`,
         { credentials: 'include' }
       )
       const data = await response.json()
@@ -164,7 +164,7 @@ export function UserRegister() {
         },
         credentials: 'include',
         body: JSON.stringify({
-          username: formData.username,
+          charUsername: formData.username,
           characterName: formData.characterName,
           age: parseInt(formData.age),
           gender: formData.gender
@@ -207,7 +207,7 @@ export function UserRegister() {
                   Welcome Back!
                 </h1>
                 <div className="flex items-center justify-center gap-2">
-                  <span className="text-xl md:text-2xl text-muted-foreground">@{characterData?.username || 'Traveler'}</span>
+                  <span className="text-xl md:text-2xl text-muted-foreground">@{characterData?.charUsername || 'Traveler'}</span>
                 </div>
               </div>
 
