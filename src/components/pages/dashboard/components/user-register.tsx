@@ -123,6 +123,9 @@ export function UserRegister() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     
+    const submitId = `submit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    console.log(`[${submitId}] handleSubmit called`);
+    
     // Reset error message
     setSubmitError("")
     

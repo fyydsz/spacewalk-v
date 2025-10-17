@@ -75,6 +75,9 @@ export const useApi = () => {
         charGender: data.gender,
       };
 
+      const requestId = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      console.log(`[Production] [${requestId}] Creating character with:`, requestBody);
+
       const response = await fetch(`${apiBaseUrl}/char/create-character`, {
         method: 'POST',
         credentials: 'include',
@@ -84,18 +87,20 @@ export const useApi = () => {
         body: JSON.stringify(requestBody),
       });
 
+      console.log(`[Production] [${requestId}] Response status:`, response.status);
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.error('[Production] Error response:', errorData);
+        console.error(`[Production] [${requestId}] Error response:`, errorData);
         throw new Error(errorData.message || `Failed to create character (${response.status})`);
       }
 
       const result = await response.json();
-      console.log('[Production] Raw response:', result);
+      console.log(`[Production] [${requestId}] Raw response:`, result);
       
       // Backend returns "character" instead of "data", normalize it
       if (result.character && !result.data) {
-        console.log('[Production] Normalizing response: character → data');
+        console.log(`[Production] [${requestId}] Normalizing response: character → data`);
         return {
           success: result.success,
           data: result.character,
