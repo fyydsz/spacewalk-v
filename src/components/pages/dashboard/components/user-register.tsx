@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { Info } from "lucide-react"
+import { Info, Loader2 } from "lucide-react"
 
 export function UserRegister() {
   const [formData, setFormData] = React.useState({
@@ -154,7 +154,8 @@ export function UserRegister() {
     setLoading(true)
 
     try {
-      const response = await fetch('https://api.spacewalk.my.id/user/register', {
+      // Promise untuk API call
+      const apiCall = fetch('https://api.spacewalk.my.id/user/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -167,6 +168,12 @@ export function UserRegister() {
           gender: formData.gender
         })
       })
+
+      // Promise untuk minimum delay 1.5 detik
+      const minDelay = new Promise(resolve => setTimeout(resolve, 1500))
+
+      // Tunggu kedua promise selesai
+      const [response] = await Promise.all([apiCall, minDelay])
 
       const data = await response.json()
 
@@ -214,7 +221,17 @@ export function UserRegister() {
 
   return (
     <div className="w-full px-4 sm:px-6 md:px-0">
-      <Card className="w-full max-w-md mx-auto">
+      <Card className="w-full max-w-md mx-auto relative">
+        {/* Loading Overlay */}
+        {loading && (
+          <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center rounded-xl">
+            <div className="flex flex-col items-center gap-3">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p className="text-sm font-medium text-muted-foreground">Sedang mendaftarkan karakter...</p>
+            </div>
+          </div>
+        )}
+        
         <CardHeader>
           <CardTitle>Registrasi Karakter</CardTitle>
           <CardDescription>
@@ -369,7 +386,14 @@ export function UserRegister() {
 
           {/* Submit Button */}
           <div className="pt-4">
-            <Button type="submit" className="w-full cursor-pointer" disabled={loading || usernameChecking}>
+            <Button 
+              type="submit" 
+              className="w-full cursor-pointer relative" 
+              disabled={loading || usernameChecking}
+            >
+              {loading && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               {loading ? "Mendaftar..." : "Daftar Karakter"}
             </Button>
           </div>
