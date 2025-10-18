@@ -230,18 +230,18 @@ export function UserRegister() {
   // Jika user sudah punya karakter, tampilkan dashboard
   if (hasCharacter === true) {
     return (
-      <div className="w-full h-full p-8 md:p-12">
+      <div className="w-full h-full max-h-[calc(100vh-4rem)] p-8 md:p-12 overflow-hidden flex flex-col">
         {/* Welcome Header */}
-        <div className="mb-12">
+        <div className="mb-8 flex-shrink-0">
           <h1 className="text-5xl font-bold mb-2 ml-2">Welcome Back!</h1>
           <p className="text-2xl text-muted-foreground ml-2">{characterData?.charName || 'Character name'}</p>
         </div>
 
         {/* Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 overflow-hidden">
           {/* Left Large Card */}
           <div className="lg:col-span-1 lg:row-span-2">
-            <Card className="h-[400px] lg:h-[512px] border-2 border-border/50">
+            <Card className="h-full max-h-[400px] lg:max-h-[480px] border-2 border-border/50">
               <CardContent className="p-8">
                 {/* Content placeholder */}
               </CardContent>
@@ -250,7 +250,7 @@ export function UserRegister() {
 
           {/* Top Right Card */}
           <div className="lg:col-span-2">
-            <Card className="h-[200px] lg:h-[240px] border-2 border-border/50">
+            <Card className="h-full max-h-[180px] lg:max-h-[220px] border-2 border-border/50">
               <CardContent className="p-8">
                 {/* Content placeholder */}
               </CardContent>
@@ -259,7 +259,7 @@ export function UserRegister() {
 
           {/* Bottom Right Card */}
           <div className="lg:col-span-2">
-            <Card className="h-[200px] lg:h-[240px] border-2 border-border/50">
+            <Card className="h-full max-h-[180px] lg:max-h-[220px] border-2 border-border/50">
               <CardContent className="p-8">
                 {/* Content placeholder */}
               </CardContent>
