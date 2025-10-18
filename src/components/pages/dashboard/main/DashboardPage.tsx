@@ -12,7 +12,7 @@ import {
   // SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { UserRegister } from "../components/user-register"
+import { UserRegister } from "../components/main-menu"
 // import RecentActivity from "./components/activity"
 // import ProjectProgress from "./components/progress"
 // import DashboardSummary from "./components/summary"
