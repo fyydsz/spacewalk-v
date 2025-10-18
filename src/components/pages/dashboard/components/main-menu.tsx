@@ -227,65 +227,45 @@ export function UserRegister() {
     }
   }
 
-  // Jika user sudah punya karakter, jangan tampilkan form
+  // Jika user sudah punya karakter, tampilkan dashboard
   if (hasCharacter === true) {
     return (
-      <div className="w-full px-4 sm:px-6 md:px-0">
-        <Card className="w-full max-w-2xl mx-auto">
-          <CardContent className="p-8 md:p-12">
-            <div className="text-center space-y-6">
-              {/* Welcome Message */}
-              <div className="space-y-2">
-                <h1 className="text-3xl md:text-4xl font-bold">
-                  Welcome Back!
-                </h1>
-                <div className="flex items-center justify-center gap-2">
-                  <span className="text-xl md:text-2xl text-muted-foreground">@{characterData?.charUsername || 'Traveler'}</span>
-                </div>
-              </div>
+      <div className="w-full h-full p-8 md:p-12">
+        {/* Welcome Header */}
+        <div className="mb-12">
+          <h1 className="text-5xl font-bold mb-2 ml-2">Welcome Back!</h1>
+          <p className="text-2xl text-muted-foreground ml-2">{characterData?.charName || 'Character name'}</p>
+        </div>
 
-              {/* Character Info Card */}
-              <div className="bg-muted/50 rounded-lg p-6 space-y-4">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Character Name</span>
-                    <span className="font-semibold">{characterData?.charName || 'Unknown'}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Birthday</span>
-                    <span className="font-semibold">
-                      {characterData?.charBirthday 
-                        ? new Date(characterData.charBirthday).toLocaleDateString('id-ID', {
-                            year: 'numeric',
-                            month: 'long', 
-                            day: 'numeric'
-                          })
-                        : '-'
-                      }
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Gender</span>
-                    <span className="font-semibold">{characterData?.charGender || '-'}</span>
-                  </div>
-                </div>
-              </div>
+        {/* Dashboard Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Large Card */}
+          <div className="lg:col-span-1 lg:row-span-2">
+            <Card className="h-[400px] lg:h-[512px] border-2 border-border/50">
+              <CardContent className="p-8">
+                {/* Content placeholder */}
+              </CardContent>
+            </Card>
+          </div>
 
-              {/* Description */}
-              <p className="text-muted-foreground">
-                Selamat datang kembali di Spacewalk! Lanjutkan petualanganmu dan jelajahi dunia baru.
-              </p>
+          {/* Top Right Card */}
+          <div className="lg:col-span-2">
+            <Card className="h-[200px] lg:h-[240px] border-2 border-border/50">
+              <CardContent className="p-8">
+                {/* Content placeholder */}
+              </CardContent>
+            </Card>
+          </div>
 
-              {/* Action Button */}
-              <Button 
-                className="w-full md:w-auto px-8 cursor-pointer"
-                onClick={() => window.location.href = '/dashboard'}
-              >
-                Lanjutkan Petualangan
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+          {/* Bottom Right Card */}
+          <div className="lg:col-span-2">
+            <Card className="h-[200px] lg:h-[240px] border-2 border-border/50">
+              <CardContent className="p-8">
+                {/* Content placeholder */}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     )
   }
