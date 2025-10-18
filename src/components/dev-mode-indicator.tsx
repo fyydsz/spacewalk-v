@@ -2,16 +2,64 @@ import { useAuth } from '@/context/auth-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { setMockUser } from '@/lib/mockData';
+import * as React from 'react';
 
 export function DevModeIndicator() {
   const { mode, user, isAuthenticated, login, logout, refreshUser } = useAuth();
+  const [position, setPosition] = React.useState({ x: window.innerWidth - 336, y: window.innerHeight - 400 });
+  const [isDragging, setIsDragging] = React.useState(false);
+  const [dragOffset, setDragOffset] = React.useState({ x: 0, y: 0 });
 
   if (mode !== 'development') {
     return null; // Don't show in production
   }
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest('button')) {
+      return; // Don't drag when clicking buttons
+    }
+    setIsDragging(true);
+    setDragOffset({
+      x: e.clientX - position.x,
+      y: e.clientY - position.y
+    });
+  };
+
+  React.useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDragging) {
+        setPosition({
+          x: e.clientX - dragOffset.x,
+          y: e.clientY - dragOffset.y
+        });
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, dragOffset]);
+
   return (
-    <Card className="fixed bottom-4 right-4 w-80 border-2 border-yellow-500 shadow-lg z-50">
+    <Card 
+      className="fixed w-80 border-2 border-yellow-500 shadow-lg z-50 cursor-move select-none"
+      style={{ 
+        left: `${position.x}px`, 
+        top: `${position.y}px`,
+        transition: isDragging ? 'none' : 'box-shadow 0.2s'
+      }}
+      onMouseDown={handleMouseDown}
+    >
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm flex items-center gap-2">
