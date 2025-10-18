@@ -20,7 +20,7 @@ import { UserRegister } from "../components/main-menu"
 export default function MainDashboardPage() {
   return (
     <SidebarInset className="flex flex-col">
-      <header className="sticky top-0 z-50 flex h-15 shrink-0 items-center gap-2 bg-background shadow-sm">
+      <header className="sticky top-0 z-50 flex h-15 shrink-0 items-center gap-2 bg-background border-b border-black/15 dark:border-white/20">
         <div className="flex w-full items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="!mr-2 !h-4" />
