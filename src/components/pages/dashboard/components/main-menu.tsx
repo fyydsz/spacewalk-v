@@ -60,6 +60,14 @@ export function UserRegister() {
       try {
         console.log(`[${mode} mode] Starting checkCharacter...`);
         
+        // In production, first check if user.character exists in context
+        if (mode === 'production' && user.character) {
+          console.log(`[${mode} mode] ✓ Character found in user context:`, user.character);
+          setHasCharacter(true);
+          setCharacterData(user.character);
+          return;
+        }
+        
         // Add 1.5 second delay for skeleton visibility (development mode)
         if (mode === 'development') {
           await new Promise(resolve => setTimeout(resolve, 1500));
@@ -84,7 +92,7 @@ export function UserRegister() {
 
     checkCharacter();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.discordId]) // Re-run only when the user ID changes
+  }, [user?.discordId, user?.character]) // Re-run when user ID or character changes
 
   React.useEffect(() => {
     // Mobile Checker

@@ -38,7 +38,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         if (response.ok) {
           const data = await response.json();
+          console.log('[Production] Auth check response:', data);
+          
+          // Set user with character data if available
           setUser(data);
+          
+          // Log character status for debugging
+          if (data.character) {
+            console.log('[Production] User has character:', data.character);
+          } else {
+            console.log('[Production] User has no character yet');
+          }
         } else {
           setUser(null);
         }
