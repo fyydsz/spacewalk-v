@@ -55,7 +55,7 @@ const data = {
       items: [
         {
           title: "Main",
-          url: "/dashboard",
+          url: "/dashboard/main",
         },
         {
           title: "Starred",
