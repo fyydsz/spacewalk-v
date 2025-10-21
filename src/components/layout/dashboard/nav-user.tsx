@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { useAuth } from "@/context/auth-context"
-import axios from "axios"
 
 import {
   BadgeCheck,
@@ -38,67 +37,22 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const { mode, logout: authLogout, login: authLogin } = useAuth();
-  const [userData, setUserData] = useState<{ username: string; avatar: string; email: string; id: string } | null>(null);
+  const { mode, logout: authLogout, user, isLoading } = useAuth();
   const [loading, setLoading] = useState(true);
 
-  // Fetch user data from Discord JWT (production) or use mock data (development)
+  // Use auth context data instead of fetching again
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (mode === 'development') {
-        // Development mode - use mock data
-        setUserData({
-          username: 'MockUser',
-          avatar: 'https://cdn.discordapp.com/embed/avatars/0.png',
-          email: 'mockuser@discord.com',
-          id: '123456789',
-        });
-        setLoading(false);
-      } else {
-        // Production mode - fetch from Discord API
-        try {
-          const response = await axios.get('https://api.spacewalk.my.id/auth/me', { 
-            withCredentials: true 
-          });
-          
-          if (response.data.success) {
-            setUserData({
-              username: response.data.user.username,
-              avatar: `https://cdn.discordapp.com/avatars/${response.data.user.id}/${response.data.user.avatar}.png`,
-              email: response.data.user.email,
-              id: response.data.user.id,
-            });
-          } else {
-            // Not authenticated, redirect to login
-            authLogin();
-          }
-        } catch (error) {
-          console.error('Failed to fetch user data:', error);
-          // Not authenticated, redirect to login in production
-          authLogin();
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchUserData();
-  }, [mode, authLogin]);
+    // Wait for auth context to finish loading
+    if (!isLoading) {
+      setLoading(false);
+    }
+  }, [isLoading]);
 
   const handleLogout = async () => {
+    await authLogout();
+    // Redirect to home after logout
     if (mode === 'production') {
-      // Production mode - call real logout API
-      try {
-        await axios.post('https://api.spacewalk.my.id/auth/logout', {}, { 
-          withCredentials: true 
-        });
-      } catch (error) {
-        console.error('Logout failed:', error);
-      }
       window.location.href = "https://www.spacewalk.my.id";
-    } else {
-      // Development mode - just clear and use auth context
-      await authLogout();
     }
   };
 
@@ -120,12 +74,14 @@ export function NavUser() {
     );
   }
   
-  // If no user data, don't show (only happens in production if not authenticated)
-  if (!userData) return null;
+  // If no user data, don't show
+  if (!user) return null;
 
-  const displayName = userData.username;
-  const displayEmail = userData.email;
-  const avatarUrl = userData.avatar;
+  const displayName = user.username || user.globalName || 'User';
+  const displayEmail = user.email || 'No email';
+  const avatarUrl = user.avatar 
+    ? `https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.png`
+    : 'https://cdn.discordapp.com/embed/avatars/0.png';
   const initials = displayName.substring(0, 2).toUpperCase();
 
   return (
