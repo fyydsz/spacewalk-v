@@ -58,23 +58,26 @@ export function UserRegister() {
 
     const checkCharacter = async () => {
       try {
+        console.log(`[${mode} mode] Starting checkCharacter...`);
+        
         // Add 1.5 second delay for skeleton visibility (development mode)
         if (mode === 'development') {
           await new Promise(resolve => setTimeout(resolve, 1500));
         }
         
         const data = await api.checkCharacter();
+        console.log(`[${mode} mode] checkCharacter response:`, data);
         
         if (data.hasCharacter && data.character) {
           setHasCharacter(true);
           setCharacterData(data.character);
-          console.log(`[${mode} mode] User already has character:`, data.character);
+          console.log(`[${mode} mode] ✓ User already has character:`, data.character);
         } else {
           setHasCharacter(false);
-          console.log(`[${mode} mode] User has no character yet`);
+          console.log(`[${mode} mode] ✗ User has no character yet`);
         }
       } catch (error) {
-        console.error("Error checking character:", error);
+        console.error(`[${mode} mode] Error checking character:`, error);
         setHasCharacter(false);
       }
     };

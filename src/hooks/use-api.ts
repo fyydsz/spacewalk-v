@@ -43,16 +43,31 @@ export const useApi = () => {
       return await mockApiResponses.checkCharacter(user);
     } else {
       // Use real API
+      console.log(`[Production] Checking character for user...`);
+      
       const response = await fetch(`${apiBaseUrl}/char/check-character`, {
         method: 'GET',
         credentials: 'include',
       });
 
+      console.log(`[Production] checkCharacter response status:`, response.status);
+
       if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error(`[Production] checkCharacter error:`, errorData);
+        
+        // If no token or invalid token, treat as no character
+        if (response.status === 401) {
+          return { hasCharacter: false };
+        }
+        
         throw new Error('Failed to check character');
       }
 
-      return await response.json();
+      const result = await response.json();
+      console.log(`[Production] checkCharacter result:`, result);
+      
+      return result;
     }
   };
 

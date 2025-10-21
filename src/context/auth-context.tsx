@@ -94,14 +94,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const updateCharacter = (character: Character) => {
+    console.log('[AuthContext] updateCharacter called with:', character);
     if (user) {
       const updatedUser = { ...user, character };
       setUser(updatedUser);
+      console.log('[AuthContext] User updated with character:', updatedUser);
       
       if (mode === 'development') {
         // Update the mock data too
         currentMockUser.character = character;
       }
+    } else {
+      console.warn('[AuthContext] Cannot update character: user is null');
     }
   };
 
