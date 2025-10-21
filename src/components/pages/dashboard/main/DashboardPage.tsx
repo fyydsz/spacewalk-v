@@ -13,11 +13,16 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { UserRegister } from "../components/main-menu"
+import { useEffect } from "react"
 // import RecentActivity from "./components/activity"
 // import ProjectProgress from "./components/progress"
 // import DashboardSummary from "./components/summary"
 
 export default function MainDashboardPage() {
+  useEffect(() => {
+    document.title = "Spacewalk Dashboard"
+  }, [])
+
   return (
     <SidebarInset className="flex flex-col">
       <header className="sticky top-0 z-50 flex h-15 shrink-0 items-center gap-2 bg-background border-b border-black/15 dark:border-white/20">
