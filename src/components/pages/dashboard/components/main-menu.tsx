@@ -13,7 +13,7 @@ import { customToast } from "@/lib/toast-helpers"
 import { DashboardSkeleton } from "@/components/layout/dashboard/dashboard-skeleton"
 
 export function UserRegister() {
-  const { updateCharacter, mode, user } = useAuth()
+  const { updateCharacter, mode, user, isLoading: authLoading } = useAuth()
   const api = useApi()
   const [formData, setFormData] = React.useState({
     characterName: "",
@@ -26,13 +26,18 @@ export function UserRegister() {
   const [calendarOpen, setCalendarOpen] = React.useState(false)
   const [isMobile, setIsMobile] = React.useState(false)
   const [submitError, setSubmitError] = React.useState("")
-  const [isCheckingCharacter, setIsCheckingCharacter] = React.useState(true)
+  const [isCheckingCharacter, setIsCheckingCharacter] = React.useState(false)
   const [hasCharacter, setHasCharacter] = React.useState(false)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [usernameChecking, setUsernameChecking] = React.useState(false)
 
   // Check if user already has a character on component mount
   React.useEffect(() => {
+    // Wait for auth context to finish loading first
+    if (authLoading) {
+      return;
+    }
+    
     // Don't run if user is null (e.g., after logout)
     if (!user) {
       setHasCharacter(false);
@@ -86,7 +91,7 @@ export function UserRegister() {
 
     checkCharacter();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.discordId, user?.character]) // Re-run when user ID or character changes
+  }, [authLoading, user?.discordId, user?.character]) // Re-run when auth loading changes or user ID/character changes
 
   React.useEffect(() => {
     // Mobile Checker
@@ -256,6 +261,11 @@ export function UserRegister() {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  // Loading state saat auth context masih loading
+  if (authLoading) {
+    return <DashboardSkeleton />
   }
 
   // Loading state saat cek karakter (skeleton)
