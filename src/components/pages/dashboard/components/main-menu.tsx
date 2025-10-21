@@ -26,67 +26,57 @@ export function UserRegister() {
   const [calendarOpen, setCalendarOpen] = React.useState(false)
   const [isMobile, setIsMobile] = React.useState(false)
   const [submitError, setSubmitError] = React.useState("")
-  const [hasCharacter, setHasCharacter] = React.useState<boolean | null>(null)
-  const [characterData, setCharacterData] = React.useState<any>(null)
-  const [loading, setLoading] = React.useState(false)
+  const [isCheckingCharacter, setIsCheckingCharacter] = React.useState(true)
+  const [hasCharacter, setHasCharacter] = React.useState(false)
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [usernameChecking, setUsernameChecking] = React.useState(false)
-  const [lastUserId, setLastUserId] = React.useState<string | null>(null)
 
-  // Detect user change and reset state to show skeleton
-  React.useEffect(() => {
-    const currentUserId = user?.discordId || null;
-    
-    // Only reset if the user ID actually changes and it's not the initial load
-    if (currentUserId !== lastUserId && lastUserId !== null) {
-      setHasCharacter(null);
-      setCharacterData(null);
-    }
-    
-    // Update lastUserId only when the new user ID is confirmed
-    if (currentUserId) {
-      setLastUserId(currentUserId);
-    }
-  }, [user?.discordId, lastUserId])
-
-  // Check if user already has a character on component mount or when user changes
+  // Check if user already has a character on component mount
   React.useEffect(() => {
     // Don't run if user is null (e.g., after logout)
     if (!user) {
-      setHasCharacter(false); // No user, so no character
+      setHasCharacter(false);
+      setIsCheckingCharacter(false);
       return;
     }
 
     const checkCharacter = async () => {
+      setIsCheckingCharacter(true);
+      
       try {
-        console.log(`[${mode} mode] Starting checkCharacter...`);
+        console.log(`[${mode} mode] Checking if user has character...`);
         
-        // In production, first check if user.character exists in context
-        if (mode === 'production' && user.character) {
+        // In production, check if user.character exists in context
+        if (user.character) {
           console.log(`[${mode} mode] ✓ Character found in user context:`, user.character);
           setHasCharacter(true);
-          setCharacterData(user.character);
+          setIsCheckingCharacter(false);
           return;
         }
         
-        // Add 1.5 second delay for skeleton visibility (development mode)
+        // Add 1.5 second delay for skeleton visibility (development mode only)
         if (mode === 'development') {
           await new Promise(resolve => setTimeout(resolve, 1500));
         }
         
+        // Fallback: Check via API (mainly for development mode)
         const data = await api.checkCharacter();
-        console.log(`[${mode} mode] checkCharacter response:`, data);
+        console.log(`[${mode} mode] checkCharacter API response:`, data);
         
         if (data.hasCharacter && data.character) {
           setHasCharacter(true);
-          setCharacterData(data.character);
-          console.log(`[${mode} mode] ✓ User already has character:`, data.character);
+          // Update context with character data
+          updateCharacter(data.character);
+          console.log(`[${mode} mode] ✓ Character found via API:`, data.character);
         } else {
           setHasCharacter(false);
-          console.log(`[${mode} mode] ✗ User has no character yet`);
+          console.log(`[${mode} mode] ✗ No character found`);
         }
       } catch (error) {
         console.error(`[${mode} mode] Error checking character:`, error);
         setHasCharacter(false);
+      } finally {
+        setIsCheckingCharacter(false);
       }
     };
 
@@ -215,7 +205,7 @@ export function UserRegister() {
       return
     }
     
-    setLoading(true)
+    setIsSubmitting(true)
 
     try {
       // Promise untuk API call
@@ -244,8 +234,7 @@ export function UserRegister() {
           "Karakter Anda telah berhasil dibuat, welcome to Spacewalk!"
         )
         
-        // Set character data and switch to character view
-        setCharacterData(data.data)
+        // Set character state to show dashboard
         setHasCharacter(true)
       } else {
         console.error('[Registration] API returned unsuccessful:', data);
@@ -261,18 +250,28 @@ export function UserRegister() {
         customToast.error("Registrasi Gagal", errorMessage)
       }
     } finally {
-      setLoading(false)
+      setIsSubmitting(false)
     }
   }
 
+  // Loading state saat cek karakter (skeleton)
+  if (isCheckingCharacter) {
+    return <DashboardSkeleton />
+  }
+  
+  // Loading state saat submit form (skeleton)
+  if (isSubmitting) {
+    return <DashboardSkeleton />
+  }
+
   // Jika user sudah punya karakter, tampilkan dashboard
-  if (hasCharacter === true) {
+  if (hasCharacter && user?.character) {
     return (
       <div className="w-full h-full max-h-[calc(100vh-4rem)] p-8 md:p-12 overflow-hidden flex flex-col">
         {/* Welcome Header */}
         <div className="mb-8 flex-shrink-0">
           <h1 className="text-5xl font-bold mb-2 ml-2">Welcome Back!</h1>
-          <p className="text-2xl text-muted-foreground ml-2">{characterData?.charName || 'Character name'}</p>
+          <p className="text-2xl text-muted-foreground ml-2">{user.character.charName || 'Character name'}</p>
         </div>
 
         {/* Dashboard Grid */}
@@ -308,16 +307,7 @@ export function UserRegister() {
     )
   }
 
-  // Loading state saat cek karakter
-  if (hasCharacter === null) {
-    return <DashboardSkeleton />
-  }
-  
-  // Loading state saat submit form
-  if (loading) {
-    return <DashboardSkeleton />
-  }
-
+  // Register form untuk user yang belum punya character
   return (
     <div className="w-full px-4 sm:px-6 md:px-0">
       <Card className="w-full max-w-md mx-auto relative">
@@ -518,12 +508,12 @@ export function UserRegister() {
             <Button 
               type="submit" 
               className="w-full cursor-pointer relative" 
-              disabled={loading || usernameChecking}
+              disabled={isSubmitting || usernameChecking}
             >
-              {loading && (
+              {isSubmitting && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
-              {loading ? "Mendaftar..." : "Daftar Karakter"}
+              {isSubmitting ? "Mendaftar..." : "Daftar Karakter"}
             </Button>
           </div>
         </form>
