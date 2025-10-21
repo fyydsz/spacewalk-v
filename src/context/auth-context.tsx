@@ -38,14 +38,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log('[Production] Auth check response:', data);
+          console.log('[Production] Auth check raw response:', data);
           
-          // Set user with character data if available
-          setUser(data);
+          // Map backend response to frontend User type
+          const user: User = {
+            discordId: data.discordId,
+            username: data.username,
+            discriminator: '0', // Discord removed discriminators, default to '0'
+            avatar: data.avatar,
+            globalName: data.name,
+            email: data.email,
+            character: data.character || null
+          };
+          
+          setUser(user);
           
           // Log character status for debugging
-          if (data.character) {
-            console.log('[Production] User has character:', data.character);
+          if (user.character) {
+            console.log('[Production] User has character:', user.character);
           } else {
             console.log('[Production] User has no character yet');
           }
