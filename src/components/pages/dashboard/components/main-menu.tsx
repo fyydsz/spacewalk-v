@@ -10,7 +10,7 @@ import { Info, Loader2, ChevronDown } from "lucide-react"
 import { useAuth } from "@/context/auth-context"
 import { useApi } from "@/hooks/use-api"
 import { customToast } from "@/lib/toast-helpers"
-import NavigationLoadingSkeleton from "@/components/layout/dashboard/navigation-loading-skeleton"
+import { DashboardSkeleton } from "@/components/layout/dashboard/dashboard-skeleton"
 
 export function UserRegister() {
   const { updateCharacter, mode, user } = useAuth()
@@ -46,32 +46,36 @@ export function UserRegister() {
       try {
         console.log(`[${mode} mode] Checking if user has character...`);
         
-        // In production, check if user.character exists in context
-        if (user.character) {
-          console.log(`[${mode} mode] ✓ Character found in user context:`, user.character);
-          setHasCharacter(true);
-          setIsCheckingCharacter(false);
-          return;
-        }
+        // Minimum delay untuk show skeleton (800ms untuk smooth UX)
+        const minDelay = new Promise(resolve => setTimeout(resolve, 800));
         
-        // Add 1.5 second delay for skeleton visibility (development mode only)
-        if (mode === 'development') {
-          await new Promise(resolve => setTimeout(resolve, 1500));
-        }
+        // Check character logic
+        const checkLogic = async () => {
+          // In production, check if user.character exists in context
+          if (user.character) {
+            console.log(`[${mode} mode] ✓ Character found in user context:`, user.character);
+            setHasCharacter(true);
+            return;
+          }
+          
+          // Fallback: Check via API (mainly for development mode)
+          const data = await api.checkCharacter();
+          console.log(`[${mode} mode] checkCharacter API response:`, data);
+          
+          if (data.hasCharacter && data.character) {
+            setHasCharacter(true);
+            // Update context with character data
+            updateCharacter(data.character);
+            console.log(`[${mode} mode] ✓ Character found via API:`, data.character);
+          } else {
+            setHasCharacter(false);
+            console.log(`[${mode} mode] ✗ No character found`);
+          }
+        };
         
-        // Fallback: Check via API (mainly for development mode)
-        const data = await api.checkCharacter();
-        console.log(`[${mode} mode] checkCharacter API response:`, data);
+        // Wait for both minimum delay and check logic to complete
+        await Promise.all([minDelay, checkLogic()]);
         
-        if (data.hasCharacter && data.character) {
-          setHasCharacter(true);
-          // Update context with character data
-          updateCharacter(data.character);
-          console.log(`[${mode} mode] ✓ Character found via API:`, data.character);
-        } else {
-          setHasCharacter(false);
-          console.log(`[${mode} mode] ✗ No character found`);
-        }
       } catch (error) {
         console.error(`[${mode} mode] Error checking character:`, error);
         setHasCharacter(false);
@@ -256,12 +260,12 @@ export function UserRegister() {
 
   // Loading state saat cek karakter (skeleton)
   if (isCheckingCharacter) {
-    return <NavigationLoadingSkeleton />
+    return <DashboardSkeleton />
   }
   
   // Loading state saat submit form (skeleton)
   if (isSubmitting) {
-    return <NavigationLoadingSkeleton />
+    return <DashboardSkeleton />
   }
 
   // Jika user sudah punya karakter, tampilkan dashboard
