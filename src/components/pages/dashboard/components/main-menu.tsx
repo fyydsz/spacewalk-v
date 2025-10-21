@@ -10,6 +10,7 @@ import { Info, Loader2, ChevronDown } from "lucide-react"
 import { useAuth } from "@/context/auth-context"
 import { useApi } from "@/hooks/use-api"
 import { customToast } from "@/lib/toast-helpers"
+import { DashboardSkeleton } from "@/components/layout/dashboard/dashboard-skeleton"
 
 export function UserRegister() {
   const { updateCharacter, mode, user } = useAuth()
@@ -267,7 +268,7 @@ export function UserRegister() {
   // Jika user sudah punya karakter, tampilkan dashboard
   if (hasCharacter === true) {
     return (
-      <div className="w-full h-full max-h-[calc(100vh-4rem)] p-8 md:p-24 overflow-hidden flex flex-col">
+      <div className="w-full h-full max-h-[calc(100vh-4rem)] p-8 md:p-12 overflow-hidden flex flex-col">
         {/* Welcome Header */}
         <div className="mb-8 flex-shrink-0">
           <h1 className="text-5xl font-bold mb-2 ml-2">Welcome Back!</h1>
@@ -275,27 +276,28 @@ export function UserRegister() {
         </div>
 
         {/* Dashboard Grid */}
-        <div className="flex flex-col lg:flex-row gap-6 flex-1 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 overflow-hidden">
           {/* Left Large Card */}
-          <div className="w-full lg:w-1/3">
-            <Card className="h-full max-h-[400px] lg:max-h-none border-2 border-border/50">
+          <div className="lg:col-span-1 lg:row-span-2">
+            <Card className="h-full max-h-[400px] lg:max-h-[480px] border-2 border-border/50">
               <CardContent className="p-8">
                 {/* Content placeholder */}
               </CardContent>
             </Card>
           </div>
 
-          {/* Right Cards Container */}
-          <div className="w-full lg:w-2/3 flex flex-col gap-6">
-            {/* Top Right Card */}
-            <Card className="flex-1 border-2 border-border/50">
+          {/* Top Right Card */}
+          <div className="lg:col-span-2">
+            <Card className="h-full max-h-[180px] lg:max-h-[220px] border-2 border-border/50">
               <CardContent className="p-8">
                 {/* Content placeholder */}
               </CardContent>
             </Card>
+          </div>
 
-            {/* Bottom Right Card */}
-            <Card className="flex-1 border-2 border-border/50">
+          {/* Bottom Right Card */}
+          <div className="lg:col-span-2">
+            <Card className="h-full max-h-[180px] lg:max-h-[220px] border-2 border-border/50">
               <CardContent className="p-8">
                 {/* Content placeholder */}
               </CardContent>
@@ -308,15 +310,12 @@ export function UserRegister() {
 
   // Loading state saat cek karakter
   if (hasCharacter === null) {
-    return (
-      <div className="w-full px-4 sm:px-6 md:px-0">
-        <Card className="w-full max-w-md mx-auto">
-          <CardContent className="text-center p-8">
-            <p className="text-muted-foreground">Memuat...</p>
-          </CardContent>
-        </Card>
-      </div>
-    )
+    return <DashboardSkeleton />
+  }
+  
+  // Loading state saat submit form
+  if (loading) {
+    return <DashboardSkeleton />
   }
 
   return (
