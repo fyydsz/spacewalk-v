@@ -123,7 +123,7 @@ export function DevModeIndicator() {
                 variant="secondary"
                 className="w-full text-xs"
               >
-                Switch to User With Character
+                Switch to User With Character (Random)
               </Button>
             </>
           )}

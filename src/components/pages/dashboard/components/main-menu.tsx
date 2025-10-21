@@ -13,7 +13,7 @@ import { customToast } from "@/lib/toast-helpers"
 import { DashboardSkeleton } from "@/components/layout/dashboard/dashboard-skeleton"
 
 export function UserRegister() {
-  const { updateCharacter, mode } = useAuth()
+  const { updateCharacter, mode, user } = useAuth()
   const api = useApi()
   const [formData, setFormData] = React.useState({
     characterName: "",
@@ -30,32 +30,69 @@ export function UserRegister() {
   const [characterData, setCharacterData] = React.useState<any>(null)
   const [loading, setLoading] = React.useState(false)
   const [usernameChecking, setUsernameChecking] = React.useState(false)
+  const [lastUserId, setLastUserId] = React.useState<string | null>(null)
 
-  // Check if user already has a character on component mount
-  // In production: only check once on mount
-  // In development: re-check when user changes (for mock data flexibility)
+  // Detect user change and reset state to show skeleton
   React.useEffect(() => {
-    const checkCharacter = async () => {
-      try {
-        const data = await api.checkCharacter()
-        
-        if (data.hasCharacter && data.character) {
-          setHasCharacter(true)
-          setCharacterData(data.character)
-          console.log(`[${mode} mode] User already has character:`, data.character)
-        } else {
-          setHasCharacter(false)
-          console.log(`[${mode} mode] User has no character yet`)
-        }
-      } catch (error) {
-        console.error("Error checking character:", error)
-        setHasCharacter(false)
-      }
+    const currentUserId = user?.discordId || null;
+    
+    // Only reset if the user ID actually changes and it's not the initial load
+    if (currentUserId !== lastUserId && lastUserId !== null) {
+      setHasCharacter(null);
+      setCharacterData(null);
+    }
+    
+    // Update lastUserId only when the new user ID is confirmed
+    if (currentUserId) {
+      setLastUserId(currentUserId);
+    }
+  }, [user?.discordId, lastUserId])
+
+  // Check if user already has a character on component mount or when user changes
+  React.useEffect(() => {
+    // Don't run if user is null (e.g., after logout)
+    if (!user) {
+      setHasCharacter(false); // No user, so no character
+      return;
     }
 
-    checkCharacter()
+    const checkCharacter = async () => {
+      try {
+        console.log(`[${mode} mode] Starting checkCharacter...`);
+        
+        // In production, first check if user.character exists in context
+        if (mode === 'production' && user.character) {
+          console.log(`[${mode} mode] ✓ Character found in user context:`, user.character);
+          setHasCharacter(true);
+          setCharacterData(user.character);
+          return;
+        }
+        
+        // Add 1.5 second delay for skeleton visibility (development mode)
+        if (mode === 'development') {
+          await new Promise(resolve => setTimeout(resolve, 1500));
+        }
+        
+        const data = await api.checkCharacter();
+        console.log(`[${mode} mode] checkCharacter response:`, data);
+        
+        if (data.hasCharacter && data.character) {
+          setHasCharacter(true);
+          setCharacterData(data.character);
+          console.log(`[${mode} mode] ✓ User already has character:`, data.character);
+        } else {
+          setHasCharacter(false);
+          console.log(`[${mode} mode] ✗ User has no character yet`);
+        }
+      } catch (error) {
+        console.error(`[${mode} mode] Error checking character:`, error);
+        setHasCharacter(false);
+      }
+    };
+
+    checkCharacter();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, mode === 'production' ? [] : [mode, api]) // Production: run once, Development: allow re-check
+  }, [user?.discordId, user?.character]) // Re-run when user ID or character changes
 
   React.useEffect(() => {
     // Mobile Checker

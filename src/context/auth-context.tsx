@@ -38,7 +38,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         if (response.ok) {
           const data = await response.json();
-          setUser(data);
+          console.log('[Production] Auth check raw response:', data);
+          
+          // Map backend response to frontend User type
+          const user: User = {
+            discordId: data.discordId,
+            username: data.username,
+            discriminator: '0', // Discord removed discriminators, default to '0'
+            avatar: data.avatar,
+            globalName: data.name,
+            email: data.email,
+            character: data.character || null
+          };
+          
+          setUser(user);
+          
+          // Log character status for debugging
+          if (user.character) {
+            console.log('[Production] User has character:', user.character);
+          } else {
+            console.log('[Production] User has no character yet');
+          }
         } else {
           setUser(null);
         }
@@ -94,14 +114,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const updateCharacter = (character: Character) => {
+    console.log('[AuthContext] updateCharacter called with:', character);
     if (user) {
       const updatedUser = { ...user, character };
       setUser(updatedUser);
+      console.log('[AuthContext] User updated with character:', updatedUser);
       
       if (mode === 'development') {
         // Update the mock data too
         currentMockUser.character = character;
       }
+    } else {
+      console.warn('[AuthContext] Cannot update character: user is null');
     }
   };
 
