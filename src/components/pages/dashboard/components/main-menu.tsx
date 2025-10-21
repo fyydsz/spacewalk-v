@@ -10,6 +10,7 @@ import { Info, Loader2, ChevronDown } from "lucide-react"
 import { useAuth } from "@/context/auth-context"
 import { useApi } from "@/hooks/use-api"
 import { customToast } from "@/lib/toast-helpers"
+import { RegistrationFormSkeleton, DashboardSkeleton } from "@/components/layout/dashboard/dashboard-skeleton"
 
 export function UserRegister() {
   const { updateCharacter, mode } = useAuth()
@@ -272,15 +273,12 @@ export function UserRegister() {
 
   // Loading state saat cek karakter
   if (hasCharacter === null) {
-    return (
-      <div className="w-full px-4 sm:px-6 md:px-0">
-        <Card className="w-full max-w-md mx-auto">
-          <CardContent className="text-center p-8">
-            <p className="text-muted-foreground">Memuat...</p>
-          </CardContent>
-        </Card>
-      </div>
-    )
+    return <RegistrationFormSkeleton />
+  }
+  
+  // Loading state saat submit form
+  if (loading) {
+    return <DashboardSkeleton />
   }
 
   return (
