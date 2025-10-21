@@ -1,5 +1,5 @@
 
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import './App.css'
 import Home from './components/pages/main/Home';
@@ -13,6 +13,7 @@ import MainDashboardPage from './components/pages/dashboard/main/DashboardPage';
 import MainNotFound from './components/layout/home/notfound';
 import MainDocsDashboard from './components/layout/dashboard/main-docs-dashboard';
 import DocsDashboardPage from './components/pages/dashboard/docs/DocsDashboardPage';
+import DashboardNotFound from './components/pages/dashboard/DashboardNotFound';
 import WikiDocs from './components/pages/main/WikiDocs';
 import { ThemeProvider } from '@/components/theme-provider';
 import { AuthProvider } from '@/context/auth-context';
@@ -44,8 +45,10 @@ function App() {
               <Route path="/support" element={<Support />} />
               <Route path="/wiki" element={<WikiDocs />} />
             </Route>
-            <Route element={<MainDashboard />}>
-              <Route path='/dashboard' element={<MainDashboardPage />} />
+            <Route path="/dashboard" element={<MainDashboard />}>
+              <Route index element={<Navigate to="/dashboard/main" replace />} />
+              <Route path="main" element={<MainDashboardPage />} />
+              <Route path="*" element={<DashboardNotFound />} />
             </Route>
             <Route element={<MainDocsDashboard/>}>
               <Route path='/dashboard-docs' element={<DocsDashboardPage />} />
