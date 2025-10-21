@@ -19,7 +19,7 @@ export const useApi = () => {
     } else {
       // Use real API
       const response = await fetch(
-        `${apiBaseUrl}/char/check-username?charUsername=${encodeURIComponent(username)}`,
+        `${apiBaseUrl}/character/check-username?charUsername=${encodeURIComponent(username)}`,
         {
           method: 'GET',
           credentials: 'include',
@@ -45,7 +45,7 @@ export const useApi = () => {
       // Use real API
       console.log(`[Production] Checking character for user...`);
       
-      const response = await fetch(`${apiBaseUrl}/char/check-character`, {
+      const response = await fetch(`${apiBaseUrl}/character/check-character`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -93,7 +93,7 @@ export const useApi = () => {
       const requestId = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       console.log(`[Production] [${requestId}] Creating character with:`, requestBody);
 
-      const response = await fetch(`${apiBaseUrl}/char/create-character`, {
+      const response = await fetch(`${apiBaseUrl}/character/create-character`, {
         method: 'POST',
         credentials: 'include',
         headers: {
