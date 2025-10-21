@@ -63,7 +63,7 @@ function App() {
           <DevModeIndicator />
           
           {/* Toast notifications */}
-          <Toaster position="top-right" duration={7000} />
+          <Toaster position="top-right" duration={7001} />
         </div>
       </AuthProvider>
     </ThemeProvider>
