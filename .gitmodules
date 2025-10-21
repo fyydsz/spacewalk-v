@@ -1,3 +1,6 @@
 [submodule "spacewalk-api"]
 	path = spacewalk-api
 	url = https://github.com/fyydsz/spacewalk-api.git
+[submodule "documentation"]
+	path = documentation
+	url = https://github.com/fyydsz/spacewalk-v-docs.git
