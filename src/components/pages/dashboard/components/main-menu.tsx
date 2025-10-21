@@ -30,6 +30,7 @@ export function UserRegister() {
   const [characterData, setCharacterData] = React.useState<any>(null)
   const [loading, setLoading] = React.useState(false)
   const [usernameChecking, setUsernameChecking] = React.useState(false)
+  const [initialCheckDone, setInitialCheckDone] = React.useState(false)
 
   // Check if user already has a character on component mount
   // In production: only check once on mount
@@ -50,6 +51,8 @@ export function UserRegister() {
       } catch (error) {
         console.error("Error checking character:", error)
         setHasCharacter(false)
+      } finally {
+        setInitialCheckDone(true)
       }
     }
 
@@ -271,12 +274,15 @@ export function UserRegister() {
     )
   }
 
-  // Loading state saat cek karakter
-  if (hasCharacter === null) {
-    return <RegistrationFormSkeleton />
+  // Loading state saat initial check
+  if (!initialCheckDone) {
+    // Tampilkan skeleton yang sesuai berdasarkan data awal
+    // Jika characterData sudah ada (dari previous session/cache), 
+    // kemungkinan user sudah punya karakter
+    return characterData ? <DashboardSkeleton /> : <RegistrationFormSkeleton />
   }
   
-  // Loading state saat submit form
+  // Loading state saat submit form (user sedang mendaftar)
   if (loading) {
     return <DashboardSkeleton />
   }
