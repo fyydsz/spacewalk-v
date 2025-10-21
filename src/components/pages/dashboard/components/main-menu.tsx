@@ -10,7 +10,7 @@ import { Info, Loader2, ChevronDown } from "lucide-react"
 import { useAuth } from "@/context/auth-context"
 import { useApi } from "@/hooks/use-api"
 import { customToast } from "@/lib/toast-helpers"
-import { DashboardSkeleton } from "@/components/layout/dashboard/dashboard-skeleton"
+import NavigationLoadingSkeleton from "@/components/layout/dashboard/navigation-loading-skeleton"
 
 export function UserRegister() {
   const { updateCharacter, mode, user } = useAuth()
@@ -256,12 +256,12 @@ export function UserRegister() {
 
   // Loading state saat cek karakter (skeleton)
   if (isCheckingCharacter) {
-    return <DashboardSkeleton />
+    return <NavigationLoadingSkeleton />
   }
   
   // Loading state saat submit form (skeleton)
   if (isSubmitting) {
-    return <DashboardSkeleton />
+    return <NavigationLoadingSkeleton />
   }
 
   // Jika user sudah punya karakter, tampilkan dashboard
