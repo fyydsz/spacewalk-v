@@ -10,7 +10,7 @@ import { Info, Loader2, ChevronDown } from "lucide-react"
 import { useAuth } from "@/context/auth-context"
 import { useApi } from "@/hooks/use-api"
 import { customToast } from "@/lib/toast-helpers"
-import { RegistrationFormSkeleton, DashboardSkeleton } from "@/components/layout/dashboard/dashboard-skeleton"
+import { DashboardSkeleton } from "@/components/layout/dashboard/dashboard-skeleton"
 
 export function UserRegister() {
   const { updateCharacter, mode } = useAuth()
@@ -30,7 +30,6 @@ export function UserRegister() {
   const [characterData, setCharacterData] = React.useState<any>(null)
   const [loading, setLoading] = React.useState(false)
   const [usernameChecking, setUsernameChecking] = React.useState(false)
-  const [initialCheckDone, setInitialCheckDone] = React.useState(false)
 
   // Check if user already has a character on component mount
   // In production: only check once on mount
@@ -51,8 +50,6 @@ export function UserRegister() {
       } catch (error) {
         console.error("Error checking character:", error)
         setHasCharacter(false)
-      } finally {
-        setInitialCheckDone(true)
       }
     }
 
@@ -274,15 +271,12 @@ export function UserRegister() {
     )
   }
 
-  // Loading state saat initial check
-  if (!initialCheckDone) {
-    // Tampilkan skeleton yang sesuai berdasarkan data awal
-    // Jika characterData sudah ada (dari previous session/cache), 
-    // kemungkinan user sudah punya karakter
-    return characterData ? <DashboardSkeleton /> : <RegistrationFormSkeleton />
+  // Loading state saat cek karakter
+  if (hasCharacter === null) {
+    return <DashboardSkeleton />
   }
   
-  // Loading state saat submit form (user sedang mendaftar)
+  // Loading state saat submit form
   if (loading) {
     return <DashboardSkeleton />
   }
