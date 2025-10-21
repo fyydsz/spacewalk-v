@@ -272,11 +272,6 @@ export function UserRegister() {
   if (isCheckingCharacter) {
     return <DashboardSkeleton />
   }
-  
-  // Loading state saat submit form (skeleton)
-  if (isSubmitting) {
-    return <DashboardSkeleton />
-  }
 
   // Jika user sudah punya karakter, tampilkan dashboard
   if (hasCharacter && user?.character) {
