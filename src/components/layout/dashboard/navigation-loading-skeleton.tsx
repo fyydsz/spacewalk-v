@@ -1,36 +1,43 @@
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Separator } from "@/components/ui/separator"
-import { SidebarTrigger } from "@/components/ui/sidebar"
-import { AppSidebar } from "./main/app-sidebar"
 
 export default function NavigationLoadingSkeleton() {
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset className="flex flex-col">
-        <header className="sticky top-0 z-50 flex h-15 shrink-0 items-center gap-2 bg-background border-b border-black/15 dark:border-white/20">
-          <div className="flex w-full items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="!mr-2 !h-4" />
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-4 w-20" />
-              <span className="text-muted-foreground">/</span>
-              <Skeleton className="h-4 w-32" />
-            </div>
-          </div>
-        </header>
-        {/* MAIN CONTENT SKELETON */}
-        <div className="flex flex-col gap-4 p-6">
-          <Skeleton className="h-8 w-48" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Skeleton className="h-32 w-full" />
-            <Skeleton className="h-32 w-full" />
-            <Skeleton className="h-32 w-full" />
-          </div>
-          <Skeleton className="h-64 w-full mt-4" />
+    <div className="w-full h-full max-h-[calc(100vh-4rem)] p-8 md:p-20 overflow-hidden flex flex-col">
+      {/* Welcome Header Skeleton */}
+      <div className="mb-8 flex-shrink-0">
+        <Skeleton className="h-12 w-64 mb-2 ml-2" />
+        <Skeleton className="h-8 w-48 ml-2" />
+      </div>
+
+      {/* Dashboard Grid */}
+      <div className="flex flex-col lg:flex-row gap-6 flex-1 overflow-hidden">
+        {/* Left Large Card */}
+        <div className="w-full lg:w-1/3">
+          <Card className="h-full max-h-[400px] lg:max-h-none border-2 border-border/50">
+            <CardContent className="p-8">
+              <Skeleton className="h-full w-full" />
+            </CardContent>
+          </Card>
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+
+        {/* Right Cards Container */}
+        <div className="w-full lg:w-2/3 flex flex-col gap-6">
+          {/* Top Right Card */}
+          <Card className="flex-1 border-2 border-border/50">
+            <CardContent className="p-8">
+              <Skeleton className="h-full w-full" />
+            </CardContent>
+          </Card>
+
+          {/* Bottom Right Card */}
+          <Card className="flex-1 border-2 border-border/50">
+            <CardContent className="p-8">
+              <Skeleton className="h-full w-full" />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   )
 }
