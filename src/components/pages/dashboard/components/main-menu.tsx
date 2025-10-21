@@ -10,6 +10,7 @@ import { Info, Loader2, ChevronDown } from "lucide-react"
 import { useAuth } from "@/context/auth-context"
 import { useApi } from "@/hooks/use-api"
 import { customToast } from "@/lib/toast-helpers"
+import { SimpleSkeleton } from "@/components/layout/dashboard/dashboard-skeleton"
 
 export function UserRegister() {
   const { updateCharacter, mode } = useAuth()
@@ -230,7 +231,7 @@ export function UserRegister() {
   // Jika user sudah punya karakter, tampilkan dashboard
   if (hasCharacter === true) {
     return (
-      <div className="w-full h-full max-h-[calc(100vh-4rem)] p-8 md:p-24 overflow-hidden flex flex-col">
+      <div className="w-full h-full max-h-[calc(100vh-4rem)] p-8 md:p-20 overflow-hidden flex flex-col">
         {/* Welcome Header */}
         <div className="mb-8 flex-shrink-0">
           <h1 className="text-5xl font-bold mb-2 ml-2">Welcome Back!</h1>
@@ -271,15 +272,7 @@ export function UserRegister() {
 
   // Loading state saat cek karakter
   if (hasCharacter === null) {
-    return (
-      <div className="w-full px-4 sm:px-6 md:px-0">
-        <Card className="w-full max-w-md mx-auto">
-          <CardContent className="text-center p-8">
-            <p className="text-muted-foreground">Memuat...</p>
-          </CardContent>
-        </Card>
-      </div>
-    )
+    return <SimpleSkeleton />
   }
 
   return (
