@@ -92,7 +92,26 @@ export const useApi = () => {
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         console.error(`[Production] [${requestId}] Error response:`, errorData);
-        throw new Error(errorData.message || `Failed to create character (${response.status})`);
+        
+        // Better error messages based on error code
+        if (errorData.error) {
+          const { code, message } = errorData.error;
+          console.error(`[Production] [${requestId}] Error code: ${code}`);
+          
+          if (code === 'NO_TOKEN' || code === 'INVALID_TOKEN') {
+            throw new Error('Anda belum login. Silakan login terlebih dahulu.');
+          } else if (code === 'CHARACTER_EXISTS') {
+            throw new Error('Karakter sudah ada untuk akun ini.');
+          } else if (code === 'USERNAME_TAKEN') {
+            throw new Error('Username sudah digunakan.');
+          } else if (code === 'MISSING_FIELDS') {
+            throw new Error('Semua field harus diisi.');
+          } else {
+            throw new Error(message || 'Terjadi kesalahan saat membuat karakter.');
+          }
+        }
+        
+        throw new Error(`Failed to create character (${response.status})`);
       }
 
       const result = await response.json();
