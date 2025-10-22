@@ -11,8 +11,6 @@ import MainHome from './components/layout/home/main-home';
 import MainDashboard from './components/layout/dashboard/main-dashboard';
 import MainDashboardPage from './components/pages/dashboard/main/DashboardPage';
 import MainNotFound from './components/layout/home/notfound';
-import MainDocsDashboard from './components/layout/dashboard/main-docs-dashboard';
-import DocsDashboardPage from './components/pages/dashboard/docs/DocsDashboardPage';
 import DashboardNotFound from './components/pages/dashboard/DashboardNotFound';
 import WikiDocs from './components/pages/main/WikiDocs';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -49,9 +47,6 @@ function App() {
               <Route index element={<Navigate to="/dashboard/main" replace />} />
               <Route path="main" element={<MainDashboardPage />} />
               <Route path="*" element={<DashboardNotFound />} />
-            </Route>
-            <Route element={<MainDocsDashboard/>}>
-              <Route path='/dashboard-docs' element={<DocsDashboardPage />} />
             </Route>
             <Route element={<MainNotFound />}>
               <Route path='*' element={<NotFound />} />

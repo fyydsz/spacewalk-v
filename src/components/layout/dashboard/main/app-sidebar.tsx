@@ -1,6 +1,5 @@
 import * as React from "react"
 import {
-  AudioWaveform,
   BookOpen,
   Bot,
   // Command,
@@ -38,12 +37,6 @@ const data = {
       logo: GalleryVerticalEnd,
       plan: "Main Dashboard",
       url: "/dashboard",
-    },
-    {
-      name: "Docs Dashboard",
-      logo: AudioWaveform,
-      plan: "Docs Dashboard",
-      url: "/dashboard-docs",
     },
   ],
   navMain: [
